@@ -23,7 +23,6 @@ class TimezoneTests: XCTestCase {
                 XCTFail("TimeZone did not return a timezone for \(timezoneIdentifier)")
                 return
             }
-            timezone.icalString
         }
 
     }
