@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftIcal",
+    name: "swift-ical",
     products: [
         .library(
             name: "SwiftIcal",
