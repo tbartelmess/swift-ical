@@ -294,6 +294,8 @@ public struct VEvent {
 
     public var attendees: [Attendee]? = nil
 
+    public var organizer: Organizer = nil
+
     public var transparency: Transparency = .opaque
 }
 
