@@ -310,182 +310,182 @@
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 37,
+      "line": 44,
       "symbol": "RecurranceRule.Weekday",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 38,
+      "line": 45,
       "symbol": "RecurranceRule.Weekday.sunday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 39,
+      "line": 46,
       "symbol": "RecurranceRule.Weekday.monday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 40,
+      "line": 47,
       "symbol": "RecurranceRule.Weekday.tuesday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 41,
+      "line": 48,
       "symbol": "RecurranceRule.Weekday.wednesday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 42,
+      "line": 49,
       "symbol": "RecurranceRule.Weekday.thursday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 43,
+      "line": 50,
       "symbol": "RecurranceRule.Weekday.friday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
-      "line": 44,
+      "line": 51,
       "symbol": "RecurranceRule.Weekday.saturday",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 47,
+      "line": 50,
       "symbol": "TimeZone.icalString",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 81,
+      "line": 84,
       "symbol": "Method",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 82,
+      "line": 85,
       "symbol": "Method.X(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 83,
+      "line": 86,
       "symbol": "Method.publish",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 84,
+      "line": 87,
       "symbol": "Method.request",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 85,
+      "line": 88,
       "symbol": "Method.reply",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 86,
+      "line": 89,
       "symbol": "Method.add",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 87,
+      "line": 90,
       "symbol": "Method.cancel",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 88,
+      "line": 91,
       "symbol": "Method.refresh",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 89,
+      "line": 92,
       "symbol": "Method.counter",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 90,
+      "line": 93,
       "symbol": "Method.declineCounter",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 91,
+      "line": 94,
       "symbol": "Method.create",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 92,
+      "line": 95,
       "symbol": "Method.response",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 93,
+      "line": 96,
       "symbol": "Method.move",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 94,
+      "line": 97,
       "symbol": "Method.modify",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 95,
+      "line": 98,
       "symbol": "Method.generateUID",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 96,
+      "line": 99,
       "symbol": "Method.delete",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
-      "line": 97,
+      "line": 100,
       "symbol": "Method.pollStatus",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
