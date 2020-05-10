@@ -1,0 +1,13 @@
+name: ci
+on:
+  - push
+jobs:
+  test:
+    container:
+      image: swift:5.2
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: swift test --enable-test-discovery --sanitize=thread
+
+  
