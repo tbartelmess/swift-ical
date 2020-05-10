@@ -91,11 +91,22 @@ extension CalendarUserType: LibicalPropertyConvertible {
 }
 
 public enum EventParticipationStatus: Equatable {
+    /// The event needs a response from the participant.
     case needsAction
+
+    /// The participant accepted the invitation
     case accepted
+
+    /// The participant declined the invitation
     case decliend
+
+    /// The participant accepted the invitation tentatively
     case tentative
+
+    /// The participant delegated the invitation to a different user
     case delegated
+
+    /// Custom, experimental status
     case x(String)
 }
 
