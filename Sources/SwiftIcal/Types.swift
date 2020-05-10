@@ -10,11 +10,15 @@ import CLibical
 
 
 typealias LibicalTimezone = UnsafeMutablePointer<_icaltimezone>
+fileprivate var zonesLoaded = false
+
 extension TimeZone {
 
     func loadZones() {
+        if zonesLoaded {
+            return
+        }
         #if os(Linux)
-        print("Setting zone directory to /usr/share/zoneinfo/")
         set_zone_directory("/usr/share/zoneinfo/")
         #endif
         #if os(macOS)
@@ -28,6 +32,7 @@ extension TimeZone {
         #endif
 
         icaltimezone_set_tzid_prefix("SwiftLibical/")
+        zonesLoaded = true
     }
 
     var icalTimeZone: LibicalTimezone {
