@@ -30,7 +30,7 @@ let myComponents = myDate.components(timezone: timezone)
 All events need to be wrapped into a `VCALENDAR`.
 
 
-```
+```swift
 let timezone = TimeZone(identifier: "America/Toronto")
 
 
@@ -60,7 +60,7 @@ print(calendar.icalString())
 
 This will generate a `VCalendar` similar to
 
-```
+```ics
 BEGIN:VCALENDAR
 PRODID:-//SwiftIcal/EN
 VERSION:2.0
