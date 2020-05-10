@@ -69,13 +69,15 @@ public struct RecurranceRule {
     /// Creates a new `RecurranceRule`
     ///
     /// - parameter frequency: Repeat frequency for the repeat rule. See `RecurranceRule.Frequency` for options.
-    public init(frequency: Frequency) {
+    public init(frequency: Frequency, count: Int? = nil, until: DateComponents? = nil) {
         self.frequency = frequency
+        self.count = count
+        self.until = until
     }
 
-    let frequency: Frequency
-    let until: DateComponents? = nil
-    let count: Int? = nil
+    var frequency: Frequency
+    var until: DateComponents? = nil
+    var count: Int? = nil
 
     /// Interval at which intervals the recurrence rule repeats
     ///
@@ -167,6 +169,13 @@ extension RecurranceRule: LibicalPropertyConvertible {
         var recurrence = icalrecurrencetype()
         recurrence.freq = frequency.icalFrequency
         recurrence.interval = Int16(interval)
+        if let count = count {
+            recurrence.count = Int32(count)
+        }
+
+        if let until = until {
+            recurrence.until = until.icaltime
+        }
         bySecond.copyToLibicalStruct(foo: &recurrence.by_second)
         byMinute.copyToLibicalStruct(foo: &recurrence.by_minute)
         byHour.copyToLibicalStruct(foo: &recurrence.by_hour)

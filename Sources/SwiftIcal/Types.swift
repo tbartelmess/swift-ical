@@ -32,6 +32,9 @@ extension TimeZone {
 
     var icalTimeZone: LibicalTimezone {
         loadZones()
+        if self.identifier == "UTC" || self.identifier == "GMT" {
+            return icaltimezone_get_utc_timezone()
+        }
         return icaltimezone_get_builtin_timezone_from_tzid("SwiftLibical/\(self.identifier)")
     }
 
