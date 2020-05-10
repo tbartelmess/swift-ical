@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SwiftIcal  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="SwiftIcal  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SwiftIcal Docs</a> (33% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SwiftIcal Reference</a>
+        <img id="carat" src="img/carat.png" />
+        SwiftIcal  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/CalendarUserType.html">CalendarUserType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/CalendarVersion.html">CalendarVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Calscale.html">Calscale</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/EventParticipationStatus.html">EventParticipationStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/EventTime.html">EventTime</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Method.html">Method</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Role.html">Role</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Transparency.html">Transparency</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/TimeZone.html">TimeZone</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/Attendee.html">Attendee</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:9SwiftIcal9OrganizerV">Organizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RecurranceRule.html">RecurranceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RecurranceRule/Frequency.html">– Frequency</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RecurranceRule/Weekday.html">– Weekday</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VCalendar.html">VCalendar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VEvent.html">VEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9SwiftIcal19CalendarUserAddressa">CalendarUserAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9SwiftIcal10CommonNamea">CommonName</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='swift-ical' class='heading'>Swift-iCal</h1>
+
+<p>Library to generate <a href="https://tools.ietf.org/html/rfc5545#section-3.8.7.4">iCalendar</a> objects using Swift.</p>
+<h2 id='dates-and-datecomponents' class='heading'>Dates and DateComponents</h2>
+
+<p>Most dates in SwiftIcal are represented using Foundations <a href="https://developer.apple.com/documentation/foundation/datecomponents"><code>DateComponents</code></a>, and not using a <a href="https://developer.apple.com/documentation/foundation/date"><code>Date</code> </a>.
+Date Components represent a date within a calendar and a timezone.
+Currently Swift-iCal only support the <a href="https://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>.</p>
+
+<p>For your convenience, Swift-iCal adds an extension to <code>Date</code> to get the date components in a given timezone.</p>
+<pre class="highlight swift"><code>
+<span class="k">let</span> <span class="nv">myDate</span> <span class="o">=</span> <span class="kt">Date</span><span class="p">()</span>
+
+<span class="cp"># Get a in the current system timezone</span>
+<span class="k">let</span> <span class="nv">myComponents</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="nf">components</span><span class="p">()</span>
+
+<span class="cp"># Get components in a specific timezone</span>
+<span class="k">let</span> <span class="nv">timezone</span> <span class="o">=</span> <span class="kt">TimeZone</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"America/Toronto"</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">myComponents</span> <span class="o">=</span> <span class="n">myDate</span><span class="o">.</span><span class="nf">components</span><span class="p">(</span><span class="nv">timezone</span><span class="p">:</span> <span class="n">timezone</span><span class="p">)</span>
+</code></pre>
+<h2 id='creating-a-vevent' class='heading'>Creating a VEVENT</h2>
+
+<p>All events need to be wrapped into a <code>VCALENDAR</code>.</p>
+<pre class="highlight plaintext"><code>let timezone = TimeZone(identifier: "America/Toronto")
+
+
+let start = DateComponents(calendar: Calendar.init(identifier: .gregorian),
+                           timeZone: timezone,
+                           year: 2020,
+                           month: 5,
+                           day: 9,
+                           hour: 22,
+                           minute: 0,
+                           second: 0)
+
+let end = DateComponents(calendar: Calendar.init(identifier: .gregorian),
+                         timeZone: timezone,
+                         year: 2020,
+                         month: 5,
+                         day: 9,
+                         hour: 23,
+                         minute: 0,
+                         second: 0)
+
+let event = VEvent(summary: "Hello World", dtstart: start, dtend: end)
+var calendar = VCalendar()
+calendar.events.append(event)
+print(calendar.icalString())
+</code></pre>
+
+<p>This will generate a <code><a href="Structs/VCalendar.html">VCalendar</a></code> similar to</p>
+<pre class="highlight plaintext"><code>BEGIN:VCALENDAR
+PRODID:-//SwiftIcal/EN
+VERSION:2.0
+BEGIN:VTIMEZONE
+.....
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:20200510T000730Z
+DTSTART;TZID=America/Toronto:20200509T220000
+DTEND;TZID=America/Toronto:20200509T230000
+SUMMARY:Hello World
+UID:14490209-562F-4A52-8E42-4020A168ECD7
+TRANSP:OPAQUE
+CREATED:20200510T000730Z
+END:VEVENT
+END:VCALENDAR
+</code></pre>
+<h3 id='timezones' class='heading'>Timezones</h3>
+
+<p>SwiftIcal uses the timezones from the timezone database.
+By default all required timezones are included in a generated VCalendar.</p>
+<h2 id='license' class='heading'>License</h2>
+<h3 id='swift-bindings' class='heading'>Swift Bindings</h3>
+
+<p>Swift-iCal is licenced under The Mozilla Public License 2.0.</p>
+<h3 id='libical' class='heading'>Libical</h3>
+
+<p>libical is distributed under two licenses.
+You may choose the terms of either:</p>
+
+<ul>
+<li>The Mozilla Public License (MPL) v2.0</li>
+</ul>
+
+<p>or</p>
+
+<ul>
+<li>The GNU Lesser General Public License (LGPL) v2.1</li>
+</ul>
+
+<hr>
+
+<p>Software distributed under these licenses is distributed on an &ldquo;AS
+IS&rdquo; basis, WITHOUT WARRANTY OF ANY KIND, either express or
+implied. See the License for the specific language governing rights
+and limitations under the License.
+Libical is distributed under both the LGPL and the MPL. The MPL
+notice, reproduced below, covers the use of either of the licenses.</p>
+
+<hr>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-10)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

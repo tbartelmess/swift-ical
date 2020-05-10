@@ -1,0 +1,502 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 38,
+      "symbol": "EventTime.startEnd(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 39,
+      "symbol": "EventTime.startDuration(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 43,
+      "symbol": "Calscale",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 44,
+      "symbol": "Calscale.gregorian",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 47,
+      "symbol": "CalendarUserAddress",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 48,
+      "symbol": "CommonName",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 50,
+      "symbol": "CalendarUserType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 93,
+      "symbol": "EventParticipationStatus",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 94,
+      "symbol": "EventParticipationStatus.needsAction",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 95,
+      "symbol": "EventParticipationStatus.accepted",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 96,
+      "symbol": "EventParticipationStatus.decliend",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 97,
+      "symbol": "EventParticipationStatus.tentative",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 98,
+      "symbol": "EventParticipationStatus.delegated",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 99,
+      "symbol": "EventParticipationStatus.x(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 126,
+      "symbol": "Role",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 127,
+      "symbol": "Role.chair",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 128,
+      "symbol": "Role.requiredParticipant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 129,
+      "symbol": "Role.optionalParticipant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 130,
+      "symbol": "Role.nonParticipant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 131,
+      "symbol": "Role.x(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 155,
+      "symbol": "Attendee",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 156,
+      "symbol": "Attendee.init(address:type:participationStatus:role:member:delegatedTo:delegatedFrom:sentBy:commonName:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 177,
+      "symbol": "Attendee.address",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 178,
+      "symbol": "Attendee.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 179,
+      "symbol": "Attendee.participationStatus",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 180,
+      "symbol": "Attendee.role",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 181,
+      "symbol": "Attendee.member",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 182,
+      "symbol": "Attendee.delegatedTo",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 183,
+      "symbol": "Attendee.delegatedFrom",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 184,
+      "symbol": "Attendee.sentBy",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 227,
+      "symbol": "Organizer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 234,
+      "symbol": "Transparency",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 235,
+      "symbol": "Transparency.opaque",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 236,
+      "symbol": "Transparency.transparent",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 252,
+      "symbol": "VEvent",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 253,
+      "symbol": "VEvent.init(summary:dtstamp:dtstart:dtend:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 265,
+      "symbol": "VEvent.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 268,
+      "symbol": "VEvent.dtstamp",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 276,
+      "symbol": "VEvent.uid",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 278,
+      "symbol": "VEvent.created",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 280,
+      "symbol": "VEvent.recurranceRule",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 282,
+      "symbol": "VEvent.duration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 284,
+      "symbol": "VEvent.attendees",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Component.swift",
+      "line": 286,
+      "symbol": "VEvent.transparency",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 37,
+      "symbol": "RecurranceRule.Weekday",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 38,
+      "symbol": "RecurranceRule.Weekday.sunday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 39,
+      "symbol": "RecurranceRule.Weekday.monday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 40,
+      "symbol": "RecurranceRule.Weekday.tuesday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 41,
+      "symbol": "RecurranceRule.Weekday.wednesday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 42,
+      "symbol": "RecurranceRule.Weekday.thursday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 43,
+      "symbol": "RecurranceRule.Weekday.friday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Recurrance.swift",
+      "line": 44,
+      "symbol": "RecurranceRule.Weekday.saturday",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 47,
+      "symbol": "TimeZone.icalString",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 81,
+      "symbol": "Method",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 82,
+      "symbol": "Method.X(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 83,
+      "symbol": "Method.publish",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 84,
+      "symbol": "Method.request",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 85,
+      "symbol": "Method.reply",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 86,
+      "symbol": "Method.add",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 87,
+      "symbol": "Method.cancel",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 88,
+      "symbol": "Method.refresh",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 89,
+      "symbol": "Method.counter",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 90,
+      "symbol": "Method.declineCounter",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 91,
+      "symbol": "Method.create",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 92,
+      "symbol": "Method.response",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 93,
+      "symbol": "Method.move",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 94,
+      "symbol": "Method.modify",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 95,
+      "symbol": "Method.generateUID",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 96,
+      "symbol": "Method.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Types.swift",
+      "line": 97,
+      "symbol": "Method.pollStatus",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Utils.swift",
+      "line": 12,
+      "symbol": "Date.components(in:calendar:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/thomasbartelmess/Developer/SwiftIcal"
+}
