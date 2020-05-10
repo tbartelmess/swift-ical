@@ -489,13 +489,6 @@
       "symbol": "Method.pollStatus",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
-    },
-    {
-      "file": "/Users/thomasbartelmess/Developer/SwiftIcal/Sources/SwiftIcal/Utils.swift",
-      "line": 12,
-      "symbol": "Date.components(in:calendar:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
     }
   ],
   "source_directory": "/Users/thomasbartelmess/Developer/SwiftIcal"
