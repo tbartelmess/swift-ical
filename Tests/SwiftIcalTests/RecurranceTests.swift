@@ -74,6 +74,14 @@ class RecurranceTests: XCTestCase {
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY;UNTIL=20200510T000000Z")
     }
 
+    func testByHour() {
+        var rule = RecurranceRule(frequency: .daily)
+        rule.byHour = Set([0, 2, 4, 6])
+        XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY;BYHOUR=0,2,4,6")
+    }
+
+
+
     static var allTests = [
         ("testSimpleSecondlyRule", testSimpleSecondlyRule),
         ("testSimpleMinutelyRule", testSimpleMinutelyRule),
@@ -83,7 +91,8 @@ class RecurranceTests: XCTestCase {
         ("testSimpleMonthlyRule", testSimpleMonthlyRule),
         ("testSimpleYearlyRule", testSimpleYearlyRule),
         ("testCount", testCount),
-        ("testEndUTCDateTime", testEndUTCDateTime)
+        ("testEndUTCDateTime", testEndUTCDateTime),
+        ("testByHour", testByHour)
 
 
     ]
