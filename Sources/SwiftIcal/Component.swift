@@ -163,6 +163,9 @@ extension Role: LibicalParameterConvertible {
 
 }
 
+
+/// An attendee is a User, that is requested to join the event.
+/// See [RFC 5545 Section 3.8.4.1](https://tools.ietf.org/html/rfc5545#section-3.8.4.1) for details
 public struct Attendee {
     public init(address: CalendarUserAddress,
                 type: CalendarUserType = .individual,
@@ -184,14 +187,36 @@ public struct Attendee {
         self.commonName = commonName
     }
 
-
+    /// E-Mail address of the attendee
     public var address: CalendarUserAddress
+
+    /// The kind of the attendee, the default is `.individual`
     public var type: CalendarUserType = .individual
+
+    /// Participation status of the attendee, the default is `.needsAction`
     public var participationStatus: EventParticipationStatus = .needsAction
+
+    /// Role of the attendee, the default value is `.requiredParticipant`
     public var role: Role = .requiredParticipant
+
+    /// Group membership.
+    ///
+    /// See [RFC 5545 Section 3.2.11](https://tools.ietf.org/html/rfc5545#section-3.2.11) for more details
     public var member: CalendarUserAddress?
+
+    /// List for users the attendance has been delegated to
+    ///
+    /// See [RFC 5545 Section 3.2.4](https://tools.ietf.org/html/rfc5545#section-3.2.5) for more details
     public var delegatedTo: [CalendarUserAddress]?
+
+    /// List for users the attendance has been delegated from
+    ///
+    /// See [RFC 5545 Section 3.2.4](https://tools.ietf.org/html/rfc5545#section-3.2.4) for more details
     public var delegatedFrom: [CalendarUserAddress]?
+
+    /// User that has sent the invitation
+    ///
+    /// See [RFC 5545 Section 3.2.18](https://tools.ietf.org/html/rfc5545#section-3.2.18) for more details
     public var sentBy: CalendarUserAddress?
 
     /// Common name for the attendee calendar user,
