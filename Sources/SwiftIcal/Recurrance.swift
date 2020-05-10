@@ -1,15 +1,15 @@
 import Foundation
 import CLibical
 
-typealias Second = Int
-typealias Minute = Int
-typealias Hour = Int
-typealias Day = Int
-typealias MonthDay = Int
-typealias YearDay = Int
-typealias WeekNumber = Int
-typealias Month = Int
-typealias Setpos = Int
+public typealias Second = Int
+public typealias Minute = Int
+public typealias Hour = Int
+public typealias Day = Int
+public typealias MonthDay = Int
+public typealias YearDay = Int
+public typealias WeekNumber = Int
+public typealias Month = Int
+public typealias Setpos = Int
 
 /// RecurranceRule
 public struct RecurranceRule {
@@ -51,7 +51,7 @@ public struct RecurranceRule {
         case saturday
     }
 
-    enum Month: Int {
+    public enum Month: Int {
         case janurary = 1
         case february = 2
         case march = 3
@@ -75,9 +75,9 @@ public struct RecurranceRule {
         self.until = until
     }
 
-    var frequency: Frequency
-    var until: DateComponents? = nil
-    var count: Int? = nil
+    public var frequency: Frequency
+    public var until: DateComponents? = nil
+    public var count: Int? = nil
 
     /// Interval at which intervals the recurrence rule repeats
     ///
@@ -87,17 +87,17 @@ public struct RecurranceRule {
     /// DAILY rule, every week for a WEEKLY rule, every month for a
     /// MONTHLY rule, and every year for a YEARLY rule.  For example,
     /// within a DAILY rule, a value of "8" means every eight days.
-    var interval: Int = 1
+    public var interval: Int = 1
 
-    var bySecond = Set<Second>()
-    var byMinute = Set<Minute>()
-    var byHour = Set<Hour>()
-    var byDay = Set<Day>()
-    var byMonthDay = Set<MonthDay>()
-    var byYearDay = Set<YearDay>()
-    var byWeekNumber = Set<WeekNumber>()
-    var byMonth = Set<Month>()
-    var bySetpos = Set<Setpos>()
+    public var bySecond = Set<Second>()
+    public var byMinute = Set<Minute>()
+    public var byHour = Set<Hour>()
+    public var byDay = Set<Day>()
+    public var byMonthDay = Set<MonthDay>()
+    public var byYearDay = Set<YearDay>()
+    public var byWeekNumber = Set<WeekNumber>()
+    public var byMonth = Set<Month>()
+    public var bySetpos = Set<Setpos>()
 
 }
 
