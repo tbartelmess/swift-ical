@@ -275,6 +275,7 @@ extension Organizer: LibicalPropertyConvertible {
         if let sentBy = sentBy {
             icalproperty_add_parameter(property, icalparameter_new_sentby(sentBy))
         }
+        return property!
     }
 }
 
@@ -331,7 +332,7 @@ public struct VEvent {
 
     public var attendees: [Attendee]? = nil
 
-    public var organizer: Organizer = nil
+    public var organizer: Organizer? = nil
 
     public var transparency: Transparency = .opaque
 }
@@ -370,6 +371,10 @@ extension VEvent: LibicalComponentConvertible {
         attendees?.forEach({ (attendee) in
             icalcomponent_add_property(comp, attendee.libicalProperty())
         })
+
+        if let organizer = organizer {
+            icalcomponent_add_property(comp, organizer.libicalProperty())
+        }
         return comp!
     }
 }
