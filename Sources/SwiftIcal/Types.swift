@@ -81,7 +81,7 @@ extension Date {
 }
 
 
-public enum Method {
+public enum Method: LibicalPropertyConvertible {
     case X(String)
     case publish
     case request
@@ -99,9 +99,8 @@ public enum Method {
     case delete
     case pollStatus
 
-    func make() -> OpaquePointer {
+    func libicalProperty() -> LibicalProperty {
         switch self {
-
         case .X(let xString):
             return icalproperty_new_x(xString.cString(using: .utf8))
         case .publish:

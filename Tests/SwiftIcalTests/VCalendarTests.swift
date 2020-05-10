@@ -33,8 +33,23 @@ class VCalendarTests: XCTestCase {
         XCTAssertEqual(calendar.icalString(), expected)
     }
 
+
+    func testMethod() {
+        var calendar = VCalendar()
+        calendar.method = .request
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        METHOD:REQUEST
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
+    }
+
     static var allTests = [
         ("testEmptyCalendar", testEmptyCalendar),
         ("testProdidChange", testProdidChange),
+        ("testMethod", testMethod)
     ]
 }

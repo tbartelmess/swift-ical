@@ -87,6 +87,9 @@ public struct VCalendar {
         let calendar = icalcomponent_new_vcalendar()!
         icalcomponent_add_property(calendar, icalproperty_new_prodid(prodid))
         icalcomponent_add_property(calendar, icalproperty_new_version(version.rawValue))
+        if let method = method {
+            icalcomponent_add_property(calendar, method.libicalProperty())
+        }
         var allTimezones = Set<TimeZone>(self.timezones)
 
         if autoincludeTimezones {
