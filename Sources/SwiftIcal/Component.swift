@@ -241,6 +241,18 @@ public struct Organizer {
     var sentBy: CalendarUserAddress?
 }
 
+extension Organizer: LibicalPropertyConvertible {
+    func libicalProperty() -> LibicalProperty {
+        let property = icalproperty_new_organizer(self.address)
+        if let commonName = commonName {
+            icalproperty_add_parameter(property, icalparameter_new_cn(commonName))
+        }
+        if let sentBy = sentBy {
+            icalproperty_add_parameter(property, icalparameter_new_sentby(sentBy))
+        }
+    }
+}
+
 
 public enum Transparency {
     case opaque
