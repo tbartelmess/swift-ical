@@ -13,7 +13,7 @@
     <a title="SwiftIcal  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftIcal Docs</a> (26% documented)</p>
+        <p><a href="index.html">SwiftIcal Docs</a> (37% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -162,31 +162,31 @@ Currently Swift-iCal only support the <a href="https://en.wikipedia.org/wiki/Gre
 <h2 id='creating-a-vevent' class='heading'>Creating a VEVENT</h2>
 
 <p>All events need to be wrapped into a <code>VCALENDAR</code>.</p>
-<pre class="highlight plaintext"><code>let timezone = TimeZone(identifier: "America/Toronto")
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">timezone</span> <span class="o">=</span> <span class="kt">TimeZone</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"America/Toronto"</span><span class="p">)</span>
 
 
-let start = DateComponents(calendar: Calendar.init(identifier: .gregorian),
-                           timeZone: timezone,
-                           year: 2020,
-                           month: 5,
-                           day: 9,
-                           hour: 22,
-                           minute: 0,
-                           second: 0)
+<span class="k">let</span> <span class="nv">start</span> <span class="o">=</span> <span class="kt">DateComponents</span><span class="p">(</span><span class="nv">calendar</span><span class="p">:</span> <span class="kt">Calendar</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="o">.</span><span class="n">gregorian</span><span class="p">),</span>
+                           <span class="nv">timeZone</span><span class="p">:</span> <span class="n">timezone</span><span class="p">,</span>
+                           <span class="nv">year</span><span class="p">:</span> <span class="mi">2020</span><span class="p">,</span>
+                           <span class="nv">month</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                           <span class="nv">day</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+                           <span class="nv">hour</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+                           <span class="nv">minute</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                           <span class="nv">second</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
 
-let end = DateComponents(calendar: Calendar.init(identifier: .gregorian),
-                         timeZone: timezone,
-                         year: 2020,
-                         month: 5,
-                         day: 9,
-                         hour: 23,
-                         minute: 0,
-                         second: 0)
+<span class="k">let</span> <span class="nv">end</span> <span class="o">=</span> <span class="kt">DateComponents</span><span class="p">(</span><span class="nv">calendar</span><span class="p">:</span> <span class="kt">Calendar</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="o">.</span><span class="n">gregorian</span><span class="p">),</span>
+                         <span class="nv">timeZone</span><span class="p">:</span> <span class="n">timezone</span><span class="p">,</span>
+                         <span class="nv">year</span><span class="p">:</span> <span class="mi">2020</span><span class="p">,</span>
+                         <span class="nv">month</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                         <span class="nv">day</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+                         <span class="nv">hour</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>
+                         <span class="nv">minute</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                         <span class="nv">second</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
 
-let event = VEvent(summary: "Hello World", dtstart: start, dtend: end)
-var calendar = VCalendar()
-calendar.events.append(event)
-print(calendar.icalString())
+<span class="k">let</span> <span class="nv">event</span> <span class="o">=</span> <span class="kt">VEvent</span><span class="p">(</span><span class="nv">summary</span><span class="p">:</span> <span class="s">"Hello World"</span><span class="p">,</span> <span class="nv">dtstart</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="nv">dtend</span><span class="p">:</span> <span class="n">end</span><span class="p">)</span>
+<span class="k">var</span> <span class="nv">calendar</span> <span class="o">=</span> <span class="kt">VCalendar</span><span class="p">()</span>
+<span class="n">calendar</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="nf">icalString</span><span class="p">())</span>
 </code></pre>
 
 <p>This will generate a <code><a href="Structs/VCalendar.html">VCalendar</a></code> similar to</p>
