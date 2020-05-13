@@ -260,10 +260,22 @@ extension Attendee: LibicalPropertyConvertible {
     }
 }
 
+
+/// The Organizer for an Event
 public struct Organizer {
-    var address: CalendarUserAddress
-    var commonName: CommonName?
-    var sentBy: CalendarUserAddress?
+    public init(address: CalendarUserAddress, commonName: CommonName? = nil, sentBy: CalendarUserAddress? = nil) {
+        self.address = address
+        self.commonName = commonName
+        self.sentBy = sentBy
+    }
+
+
+    /// E-Mail address of the Organizer
+    public var address: CalendarUserAddress
+
+    /// Name of the Organizer
+    public var commonName: CommonName?
+    public var sentBy: CalendarUserAddress?
 }
 
 extension Organizer: LibicalPropertyConvertible {
