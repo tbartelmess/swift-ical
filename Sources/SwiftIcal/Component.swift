@@ -179,6 +179,7 @@ public struct Attendee {
                 type: CalendarUserType = .individual,
                 participationStatus: EventParticipationStatus = .needsAction,
                 role: Role = .requiredParticipant,
+                rsvp: Bool = false,
                 member: CalendarUserAddress? = nil,
                 delegatedTo: [CalendarUserAddress]? = nil,
                 delegatedFrom: [CalendarUserAddress]? = nil,
@@ -188,6 +189,7 @@ public struct Attendee {
         self.type = type
         self.participationStatus = participationStatus
         self.role = role
+        self.rsvp = rsvp
         self.member = member
         self.delegatedTo = delegatedTo
         self.delegatedFrom = delegatedFrom
@@ -230,6 +232,9 @@ public struct Attendee {
     /// Common name for the attendee calendar user,
     /// e.g. John Smith.
     public var commonName: CommonName?
+
+    /// Property if the attendee is requested to send
+    public var rsvp: Bool
 }
 
 extension Attendee: LibicalPropertyConvertible {
@@ -263,6 +268,10 @@ extension Attendee: LibicalPropertyConvertible {
 
         if let commonName = commonName {
             icalproperty_add_parameter(property, icalparameter_new_cn(commonName))
+        }
+
+        if rsvp == true {
+            icalproperty_add_parameter(property, icalparameter_new_rsvp(ICAL_RSVP_TRUE))
         }
         return property!
     }
