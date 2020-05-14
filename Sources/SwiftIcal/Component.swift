@@ -376,7 +376,7 @@ extension VEvent: LibicalComponentConvertible {
         let dtstartProperty = icalproperty_new_dtstart(dtstart.date!.icalTime())
 
         if let timezone = dtstart.timeZone {
-            icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(timezone.identifier))
+            icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + "/" + timezone.identifier))
         }
         icalcomponent_add_property(comp, dtstartProperty)
 
