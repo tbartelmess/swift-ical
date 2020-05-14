@@ -45,6 +45,14 @@ public enum Calscale {
 }
 
 public typealias CalendarUserAddress = String
+
+extension CalendarUserAddress {
+    var mailtoAddress: String {
+        return "mailto:\(self)"
+    }
+}
+
+
 public typealias CommonName = String
 
 public enum CalendarUserType: Equatable {
@@ -226,7 +234,7 @@ public struct Attendee {
 
 extension Attendee: LibicalPropertyConvertible {
     func libicalProperty() -> LibicalProperty {
-        let property = icalproperty_new_attendee(self.address)
+        let property = icalproperty_new_attendee(self.address.mailtoAddress)
         if type != .individual {
             icalproperty_add_parameter(property, type.libicalProperty())
         }
