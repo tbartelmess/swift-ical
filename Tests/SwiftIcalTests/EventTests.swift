@@ -10,7 +10,7 @@ import SwiftIcal
 import XCTest
 
 
-let testTimezone =  TimeZone(identifier: "America/Santiago")!
+let testTimezone =  TimeZone(identifier: "Europe/Berlin")!
 extension Date {
 
     var components: DateComponents {
@@ -50,8 +50,8 @@ class EventTests: XCTestCase {
         VERSION:2.0
         BEGIN:VEVENT
         DTSTAMP:19700101T000000Z
-        DTSTART;TZID=America/Santiago:20200509T110000
-        DTEND;TZID=America/Santiago:20200509T120000
+        DTSTART;TZID=Europe/Berlin:20200509T110000
+        DTEND;TZID=Europe/Berlin:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
@@ -79,8 +79,8 @@ class EventTests: XCTestCase {
         VERSION:2.0
         BEGIN:VEVENT
         DTSTAMP:19700101T000000Z
-        DTSTART;TZID=America/Santiago:20200509T110000
-        DTEND;TZID=America/Santiago:20200509T120000
+        DTSTART;TZID=Europe/Berlin:20200509T110000
+        DTEND;TZID=Europe/Berlin:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE

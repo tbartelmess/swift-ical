@@ -370,10 +370,10 @@ extension VEvent: LibicalComponentConvertible {
     func libicalComponent() -> LibicalComponent {
         let comp = icalcomponent_new_vevent()
 
-        let dtstampProperty = icalproperty_new_dtstamp(dtstamp.icalTime(utc: true))
+        let dtstampProperty = icalproperty_new_dtstamp(dtstamp.icalTime(timeZone: .utc))
         icalcomponent_add_property(comp, dtstampProperty)
 
-        let dtstartProperty = icalproperty_new_dtstart(dtstart.date!.icalTime())
+        let dtstartProperty = icalproperty_new_dtstart(dtstart.date!.icalTime(timeZone: dtstart.timeZone ?? .utc))
 
         if let timezone = dtstart.timeZone {
             icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
@@ -381,7 +381,7 @@ extension VEvent: LibicalComponentConvertible {
         icalcomponent_add_property(comp, dtstartProperty)
 
         if let dtend = dtend {
-            let dtendProperty = icalproperty_new_dtend(dtend.date!.icalTime())
+            let dtendProperty = icalproperty_new_dtend(dtend.date!.icalTime(timeZone: dtend.timeZone ?? .utc))
             if let timezone = dtend.timeZone {
                 icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(timezone.identifier))
             }
@@ -395,7 +395,7 @@ extension VEvent: LibicalComponentConvertible {
         }
 
         icalcomponent_add_property(comp, transparency.libicalProperty())
-        icalcomponent_add_property(comp, icalproperty_new_created(created.icalTime(utc: true)))
+        icalcomponent_add_property(comp, icalproperty_new_created(created.icalTime(timeZone: .utc)))
 
         attendees?.forEach({ (attendee) in
             icalcomponent_add_property(comp, attendee.libicalProperty())
