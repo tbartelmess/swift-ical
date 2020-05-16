@@ -66,8 +66,8 @@ class EventTests: XCTestCase {
         var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
         event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
         event.attendees = [Attendee(address: "thomas@bartelmess.io", commonName: "Thomas Bartelmess")]
-        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
-        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
         event.uid = "TEST-UID"
         var calendar = VCalendar()
         calendar.events.append(event)
@@ -78,13 +78,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:20001231T210000Z
+        DTSTAMP:19691231T210000Z
         DTSTART;TZID=America/Santiago:20200509T110000
         DTEND;TZID=America/Santiago:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:20001231T210000Z
+        CREATED:19691231T210000Z
         ATTENDEE;CN=Thomas Bartelmess:mailto:thomas@bartelmess.io
         END:VEVENT
         END:VCALENDAR
@@ -116,8 +116,8 @@ class EventTests: XCTestCase {
 
         var event = VEvent(summary: "Hello World", dtstart: start, dtend: end)
         event.uid = "TEST-UID"
-        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
-        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
         var calendar = VCalendar()
         calendar.events.append(event)
         calendar.autoincludeTimezones = false
@@ -126,13 +126,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:20001231T210000Z
+        DTSTAMP:19691231T210000Z
         DTSTART;TZID=America/Toronto:20200509T220000
         DTEND;TZID=America/Toronto:20200509T230000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:20001231T210000Z
+        CREATED:19691231T210000Z
         END:VEVENT
         END:VCALENDAR
         """.icalFormatted
