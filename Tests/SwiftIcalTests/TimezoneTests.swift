@@ -15,20 +15,14 @@ class TimezoneTests: XCTestCase {
     func testSouthGeoriga() {
         XCTAssertNotNil(TimeZone(identifier: "Atlantic/South_Georgia")?.icalString)
     }
-    func testOne() {
 
-        TimeZone.knownTimeZoneIdentifiers.forEach { (timezoneIdentifier) in
-            if timezoneIdentifier == "GMT" { return }
-            guard let timezone = TimeZone(identifier: timezoneIdentifier) else {
-                XCTFail("TimeZone did not return a timezone for \(timezoneIdentifier)")
-                return
-            }
-        }
-
+    func testTZID() {
+        let string = TimeZone(identifier: "America/Santiago")?.icalString
+        XCTAssertTrue(string?.contains("TZID:America/Santiago") ?? false)
     }
 
     static var allTests = [
         ("testSouthGeoriga", testSouthGeoriga),
-        ("testOne", testOne),
+        ("testTZID", testTZID),
     ]
 }

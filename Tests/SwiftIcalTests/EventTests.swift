@@ -38,20 +38,58 @@ class EventTests: XCTestCase {
     func testSimpleEvent() {
         var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
         event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
+        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
+        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        event.uid = "TEST-UID"
         var calendar = VCalendar()
         calendar.events.append(event)
-        let string = calendar.icalString()
-        print(string)
+        calendar.autoincludeTimezones = false
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:20001231T210000Z
+        DTSTART;TZID=America/Santiago:20200509T110000
+        DTEND;TZID=America/Santiago:20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:20001231T210000Z
+        END:VEVENT
+        END:VCALENDAR
+        """
+        XCTAssertEqual(calendar.icalString(), expected.icalFormatted)
     }
 
     func testEventWithAttendees() {
         var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
         event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
         event.attendees = [Attendee(address: "thomas@bartelmess.io", commonName: "Thomas Bartelmess")]
+        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
+        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        event.uid = "TEST-UID"
         var calendar = VCalendar()
         calendar.events.append(event)
-        let string = calendar.icalString()
-        print(string)
+        calendar.autoincludeTimezones = false
+
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:20001231T210000Z
+        DTSTART;TZID=America/Santiago:20200509T110000
+        DTEND;TZID=America/Santiago:20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:20001231T210000Z
+        ATTENDEE;CN=Thomas Bartelmess:mailto:thomas@bartelmess.io
+        END:VEVENT
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
     }
 
     func testDemo() {
@@ -76,9 +114,28 @@ class EventTests: XCTestCase {
                                  second: 0
                 )
 
-        let event = VEvent(summary: "Hello World", dtstart: start, dtend: end)
-       var calendar = VCalendar()
+        var event = VEvent(summary: "Hello World", dtstart: start, dtend: end)
+        event.uid = "TEST-UID"
+        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
+        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        var calendar = VCalendar()
         calendar.events.append(event)
-        print(calendar.icalString())
+        calendar.autoincludeTimezones = false
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:20001231T210000Z
+        DTSTART;TZID=America/Toronto:20200509T220000
+        DTEND;TZID=America/Toronto:20200509T230000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:20001231T210000Z
+        END:VEVENT
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
     }
 }
