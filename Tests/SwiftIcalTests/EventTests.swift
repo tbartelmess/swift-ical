@@ -38,8 +38,8 @@ class EventTests: XCTestCase {
     func testSimpleEvent() {
         var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
         event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
-        event.dtstamp = Date(timeIntervalSinceReferenceDate: 0)
-        event.created = Date(timeIntervalSinceReferenceDate: 0)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
         event.uid = "TEST-UID"
         var calendar = VCalendar()
         calendar.events.append(event)
@@ -49,13 +49,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:20001231T210000Z
+        DTSTAMP:19691231T210000Z
         DTSTART;TZID=America/Santiago:20200509T110000
         DTEND;TZID=America/Santiago:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:20001231T210000Z
+        CREATED:19691231T210000Z
         END:VEVENT
         END:VCALENDAR
         """
