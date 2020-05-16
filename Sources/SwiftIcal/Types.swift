@@ -69,13 +69,18 @@ extension TimeZone {
 
 extension Date {
     func icalTime(in calendar: Calendar = .autoupdatingCurrent, utc: Bool = false) -> icaltimetype {
-        let day = calendar.component(.day, from: self)
-        let month = calendar.component(.month, from: self)
-        let year = calendar.component(.year, from: self)
+        var timeZone = calendar.timeZone
+        if utc {
+            timeZone = TimeZone(secondsFromGMT: 0)!
+        }
+        let components = calendar.dateComponents(in: timeZone, from: self)
+        let day = components.day ?? 0
+        let month = components.month ?? 0
+        let year = components.year ?? 0
 
-        let hour = calendar.component(.hour, from: self)
-        let minute = calendar.component(.minute, from: self)
-        let second = calendar.component(.second, from: self)
+        let hour = components.hour ?? 0
+        let minute = components.minute ?? 0
+        let second = components.second ?? 0
 
         var timezone: UnsafeMutablePointer<icaltimezone>? = nil
         if utc {

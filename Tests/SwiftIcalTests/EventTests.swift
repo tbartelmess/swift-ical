@@ -49,13 +49,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:19691231T210000Z
+        DTSTAMP:19700101T000000Z
         DTSTART;TZID=America/Santiago:20200509T110000
         DTEND;TZID=America/Santiago:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:19691231T210000Z
+        CREATED:19700101T000000Z
         END:VEVENT
         END:VCALENDAR
         """
@@ -78,13 +78,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:19691231T210000Z
+        DTSTAMP:19700101T000000Z
         DTSTART;TZID=America/Santiago:20200509T110000
         DTEND;TZID=America/Santiago:20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:19691231T210000Z
+        CREATED:19700101T000000Z
         ATTENDEE;CN=Thomas Bartelmess:mailto:thomas@bartelmess.io
         END:VEVENT
         END:VCALENDAR
@@ -126,13 +126,13 @@ class EventTests: XCTestCase {
         PRODID:-//SwiftIcal/EN
         VERSION:2.0
         BEGIN:VEVENT
-        DTSTAMP:19691231T210000Z
+        DTSTAMP:19700101T000000Z
         DTSTART;TZID=America/Toronto:20200509T220000
         DTEND;TZID=America/Toronto:20200509T230000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
-        CREATED:19691231T210000Z
+        CREATED:19700101T000000Z
         END:VEVENT
         END:VCALENDAR
         """.icalFormatted
