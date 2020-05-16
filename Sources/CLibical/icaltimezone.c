@@ -64,8 +64,8 @@ static pthread_mutex_t changes_mutex = PTHREAD_MUTEX_INITIALIZER;
 /** The prefix we use to uniquely identify TZIDs.
     It must begin and end with forward slashes.
  */
-#define BUILTIN_TZID_PREFIX_LEN 256
-#define BUILTIN_TZID_PREFIX     "/freeassociation.sourceforge.net/"
+#define BUILTIN_TZID_PREFIX_LEN 0
+#define BUILTIN_TZID_PREFIX     ""
 
 /* The prefix to be used for tzid's generated from system tzdata */
 static char s_ical_tzid_prefix[BUILTIN_TZID_PREFIX_LEN] = {0};
@@ -185,6 +185,7 @@ static void icaltimezone_changes_unlock(void)
 
 const char *icaltimezone_tzid_prefix(void)
 {
+    return "";
     if (s_ical_tzid_prefix[0] == '\0') {
         strncpy(s_ical_tzid_prefix, BUILTIN_TZID_PREFIX, BUILTIN_TZID_PREFIX_LEN-1);
     }
@@ -1492,8 +1493,7 @@ icaltimezone *icaltimezone_get_builtin_timezone_from_tzid(const char *tzid)
 
     tzid_prefix = icaltimezone_tzid_prefix();
 //    /* Check that the TZID starts with our unique prefix. */
-    if (strncmp(tzid, tzid_prefix, strlen(tzid_prefix)))
-        return NULL;
+    
 
 #if defined(USE_BUILTIN_TZDATA)
     /* XXX  The code below makes assumptions about the prefix
@@ -1513,7 +1513,7 @@ icaltimezone *icaltimezone_get_builtin_timezone_from_tzid(const char *tzid)
     p++;
 #else
     /* Skip past our prefix */
-    p = tzid + strlen(tzid_prefix);
+    p = tzid;
 #endif
 
     /* Now we can use the function to get the builtin timezone from the
@@ -1773,9 +1773,6 @@ static void icaltimezone_parse_zone_tab(void)
         }
 
         icalarray_append(builtin_timezones, &zone);
-
-
-        printf("Found zone: %s %f %f\n", location, zone.latitude, zone.longitude);
     }
 
     fclose(fp);

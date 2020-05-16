@@ -31,7 +31,7 @@ extension TimeZone {
         }
         #endif
 
-        icaltimezone_set_tzid_prefix("SwiftLibical/")
+        //icaltimezone_set_tzid_prefix("")
         zonesLoaded = true
     }
 
@@ -40,13 +40,13 @@ extension TimeZone {
         if self.identifier == "UTC" || self.identifier == "GMT" {
             return icaltimezone_get_utc_timezone()
         }
-        return icaltimezone_get_builtin_timezone_from_tzid("SwiftLibical/\(self.identifier)")
+        return icaltimezone_get_builtin_timezone_from_tzid(self.identifier)
     }
 
     var icalComponent: LibicalComponent {
         loadZones()
 
-        let tz = icaltimezone_get_builtin_timezone_from_tzid("SwiftLibical/\(self.identifier)")
+        let tz = icaltimezone_get_builtin_timezone_from_tzid(self.identifier)
         let comp = icaltimezone_get_component(tz)
         
         return comp!
