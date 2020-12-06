@@ -371,7 +371,7 @@ public struct VEvent {
     /// A short summary or subject for the calendar component.
     ///
     /// See [RFC 5543 Section 3.8.1.12](https://tools.ietf.org/html/rfc5545#section-3.8.1.12) for details.
-    public var summary: String
+    public var summary: String? = nil
 
     public var description: String?
 
