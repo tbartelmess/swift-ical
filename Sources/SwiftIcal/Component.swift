@@ -17,6 +17,39 @@ protocol LibicalParameterConvertible {
     func libicalParameter() -> LibicalParameter
 }
 
+extension LibicalComponent {
+    subscript(kind: icalproperty_kind) -> [LibicalProperty] {
+        var result: [LibicalProperty] = []
+        if let first = icalcomponent_get_first_property(self, kind) {
+            result.append(first)
+        }
+        while let property = icalcomponent_get_next_property(self, kind) {
+            result.append(property)
+        }
+        return result
+    }
+
+    subscript(kind: icalcomponent_kind)-> [LibicalComponent] {
+        var result: [LibicalComponent] = []
+        if let first = icalcomponent_get_first_component(self, kind) {
+            result.append(first)
+        }
+        while let property = icalcomponent_get_next_component(self, kind) {
+            result.append(property)
+        }
+        return result
+    }
+}
+
+extension LibicalProperty {
+    var value: String? {
+        guard let ptr = icalproperty_get_value_as_string(self) else {
+            return nil
+        }
+        return String(cString: ptr)
+    }
+}
+
 
 extension DateComponents {
     var icaltime: icaltimetype {

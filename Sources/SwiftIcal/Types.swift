@@ -87,7 +87,7 @@ extension Date {
 }
 
 
-public enum Method: LibicalPropertyConvertible {
+public enum Method: Equatable, LibicalPropertyConvertible {
     case X(String)
     case publish
     case request
@@ -104,6 +104,49 @@ public enum Method: LibicalPropertyConvertible {
     case generateUID
     case delete
     case pollStatus
+
+    static func from(property: LibicalProperty) -> Self? {
+        let method = icalproperty_get_method(property)
+        switch method {
+        case ICAL_METHOD_PUBLISH:
+            return .publish
+        case ICAL_METHOD_REQUEST:
+            return .request
+        case ICAL_METHOD_REPLY:
+            return .reply
+        case ICAL_METHOD_ADD:
+            return .add
+        case ICAL_METHOD_CANCEL:
+            return .cancel
+        case ICAL_METHOD_REFRESH:
+            return .refresh
+        case ICAL_METHOD_COUNTER:
+            return .counter
+        case ICAL_METHOD_DECLINECOUNTER:
+            return .declineCounter
+        case ICAL_METHOD_CREATE:
+            return .create
+        case ICAL_METHOD_RESPONSE:
+            return .response
+        case ICAL_METHOD_MOVE:
+            return .move
+        case ICAL_METHOD_MODIFY:
+            return .modify
+        case ICAL_METHOD_GENERATEUID:
+            return .generateUID
+        case ICAL_METHOD_DELETE:
+            return .delete
+        case ICAL_METHOD_POLLSTATUS:
+            return .pollStatus
+        case ICAL_METHOD_X:
+            if let string = icalproperty_get_x(property) {
+                return .X(String(cString: string))
+            }
+            return nil
+        default:
+            return nil
+        }
+    }
 
     func libicalProperty() -> LibicalProperty {
         switch self {
