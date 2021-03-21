@@ -17,7 +17,7 @@
 /*#line 7 "icalrestriction.c.in"*/
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icalrestriction.h"
@@ -54,7 +54,7 @@ typedef struct icalrestriction_component_record
 static const icalrestriction_property_record *icalrestriction_get_property_restriction(
     icalproperty_method method, icalcomponent_kind component, icalproperty_kind property);
 
-static icalrestriction_property_record null_prop_record =
+static const icalrestriction_property_record null_prop_record =
     { ICAL_METHOD_NONE, ICAL_NO_COMPONENT, ICAL_NO_PROPERTY, ICAL_RESTRICTION_UNKNOWN, NULL };
 
 /** Each row gives the result of comparing a restriction against a count.
@@ -63,7 +63,7 @@ static icalrestriction_property_record null_prop_record =
    ICAL_RESTRICTION_ONE, if there is 1 of a property with that
    restriction, it passes, but if there are 0 or 2+, it fails. */
 
-static char compare_map[ICAL_RESTRICTION_UNKNOWN + 1][3] = {
+static const char compare_map[ICAL_RESTRICTION_UNKNOWN + 1][3] = {
     {1, 1, 1}, /*ICAL_RESTRICTION_NONE */
     {1, 0, 0}, /*ICAL_RESTRICTION_ZERO */
     {0, 1, 0}, /*ICAL_RESTRICTION_ONE */
@@ -1449,7 +1449,7 @@ static const icalrestriction_property_record icalrestriction_property_records[] 
     {ICAL_METHOD_NONE, ICAL_VTIMEZONE_COMPONENT, ICAL_UID_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},
     {ICAL_METHOD_NONE, ICAL_VTIMEZONE_COMPONENT, ICAL_URL_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},
     {ICAL_METHOD_NONE, ICAL_VTIMEZONE_COMPONENT, ICAL_VERSION_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},
-    {ICAL_METHOD_NONE, ICAL_VTIMEZONE_COMPONENT, ICAL_X_PROPERTY, ICAL_RESTRICTION_ZEROORONE, NULL},
+    {ICAL_METHOD_NONE, ICAL_VTIMEZONE_COMPONENT, ICAL_X_PROPERTY, ICAL_RESTRICTION_ZEROPLUS, NULL},
     {ICAL_METHOD_NONE, ICAL_XSTANDARD_COMPONENT, ICAL_ACTION_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},
     {ICAL_METHOD_NONE, ICAL_XSTANDARD_COMPONENT, ICAL_ATTACH_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},
     {ICAL_METHOD_NONE, ICAL_XSTANDARD_COMPONENT, ICAL_ATTENDEE_PROPERTY, ICAL_RESTRICTION_ZERO, NULL},

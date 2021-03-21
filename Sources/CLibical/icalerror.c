@@ -19,7 +19,7 @@
 ======================================================================*/
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icalerror.h"
@@ -83,15 +83,13 @@ void icalerror_stop_here(void)
 
 void icalerror_crash_here(void)
 {
-#if !defined(__clang_analyzer__)
     int *p = 0;
     /* coverity[var_deref_op] */
     /* cppcheck-suppress nullPointer */
-    *p = 1;
+    *p = 1; /*clang-analyzer false positive. we want a crash*/
 
     /* cppcheck-suppress nullPointer */
     assert(*p);
-#endif
 }
 
 void icalerror_clear_errno()

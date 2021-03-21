@@ -19,7 +19,7 @@
 ======================================================================*/
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icalproperty_p.h"
@@ -91,7 +91,7 @@ icalproperty *icalproperty_new(icalproperty_kind kind)
     return (icalproperty *) icalproperty_new_impl(kind);
 }
 
-icalproperty *icalproperty_clone(const icalproperty *old)
+icalproperty *icalproperty_new_clone(icalproperty *old)
 {
     icalproperty *new;
     pvl_elem p;
@@ -101,7 +101,7 @@ icalproperty *icalproperty_clone(const icalproperty *old)
     icalerror_check_arg_rz((new != 0), "new");
 
     if (old->value != 0) {
-        new->value = icalvalue_clone(old->value);
+        new->value = icalvalue_new_clone(old->value);
     }
 
     if (old->x_name != 0) {
@@ -116,7 +116,7 @@ icalproperty *icalproperty_clone(const icalproperty *old)
     }
 
     for (p = pvl_head(old->parameters); p != 0; p = pvl_next(p)) {
-        icalparameter *param = icalparameter_clone(pvl_data(p));
+        icalparameter *param = icalparameter_new_clone(pvl_data(p));
 
         if (param == 0) {
             icalproperty_free(new);
@@ -128,11 +128,6 @@ icalproperty *icalproperty_clone(const icalproperty *old)
     }
 
     return new;
-}
-
-icalproperty *icalproperty_new_clone(icalproperty *old)
-{
-    return icalproperty_clone(old);
 }
 
 icalproperty *icalproperty_new_from_string(const char *str)
@@ -218,7 +213,7 @@ void icalproperty_free(icalproperty *p)
 
 /* This returns where the start of the next line should be. chars_left does
    not include the trailing '\0'. */
-static size_t MAX_LINE_LEN = 75;
+static const size_t MAX_LINE_LEN = 75;
 
 static char *get_next_line_start(char *line_start, size_t chars_left)
 {
@@ -630,16 +625,6 @@ char *icalproperty_get_parameter_as_string_r(icalproperty *prop, const char *nam
     return str;
 }
 
-/** @brief Remove all parameters with the specified kind.
- *
- *  @param prop   A valid icalproperty.
- *  @param kind   The kind to remove (ex. ICAL_TZID_PARAMETER)
- *
- *  See icalproperty_remove_parameter_by_name() and
- *  icalproperty_remove_parameter_by_ref() for alternate ways of
- *  removing parameters
- */
-
 void icalproperty_remove_parameter_by_kind(icalproperty *prop, icalparameter_kind kind)
 {
     pvl_elem p;
@@ -656,20 +641,6 @@ void icalproperty_remove_parameter_by_kind(icalproperty *prop, icalparameter_kin
         }
     }
 }
-
-/** @brief Remove all parameters with the specified name.
- *
- *  @param prop   A valid icalproperty.
- *  @param name   The name of the parameter to remove
- *
- *  This function removes parameters with the given name.  The name
- *  corresponds to either a built-in name (TZID, etc.) or the name of
- *  an extended parameter (X-FOO)
- *
- *  See icalproperty_remove_parameter_by_kind() and
- *  icalproperty_remove_parameter_by_ref() for alternate ways of removing
- *  parameters
- */
 
 void icalproperty_remove_parameter_by_name(icalproperty *prop, const char *name)
 {
@@ -699,15 +670,6 @@ void icalproperty_remove_parameter_by_name(icalproperty *prop, const char *name)
         }
     }
 }
-
-/** @brief Remove the specified parameter reference from the property.
- *
- *  @param prop   A valid icalproperty.
- *  @param parameter   A reference to a specific icalparameter.
- *
- *  This function removes the specified parameter reference from the
- *  property.
- */
 
 void icalproperty_remove_parameter_by_ref(icalproperty *prop, icalparameter *parameter)
 {
@@ -1077,7 +1039,7 @@ void icalproperty_normalize(icalproperty *prop)
     prop->parameters = sorted_params;
 }
 
-/**     @brief Get a DATE or DATE-TIME property as an icaltime
+/**     @brief Gets a DATE or DATE-TIME property as an icaltime
  *
  *      If the property is a DATE-TIME with a TZID parameter and a
  *      corresponding VTIMEZONE is present in the component, the
