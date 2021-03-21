@@ -104,7 +104,6 @@ public struct VCalendar {
         }
 
 
-
         allTimezones.forEach { (timezone) in
             icalcomponent_add_component(calendar, timezone.icalComponent)
         }
@@ -112,6 +111,44 @@ public struct VCalendar {
             icalcomponent_add_component(calendar, event.libicalComponent())
         }
 
+        return calendar
+    }
+}
+
+public enum ParseError: Error, Equatable {
+    case invalidVCalendar
+    case invalidVersion
+    case noVersion
+}
+
+
+
+extension VCalendar {
+    public static func parse(_ string: String) throws -> VCalendar {
+        guard let calendarComponent: LibicalComponent = icalcomponent_new_from_string(string) else {
+            throw ParseError.invalidVCalendar
+        }
+        var calendar = VCalendar()
+        // Parse Prodid
+        if let prodid = calendarComponent[ICAL_PRODID_PROPERTY].first?.value {
+            calendar.prodid = prodid
+        }
+
+        // Parse Version
+        guard let version = calendarComponent[ICAL_VERSION_PROPERTY].first?.value else {
+            throw ParseError.noVersion
+        }
+        if version != "2.0" {
+            throw ParseError.invalidVersion
+        }
+
+        // Parse Method
+
+        if let methodProperty = calendarComponent[ICAL_METHOD_PROPERTY].first {
+            calendar.method = Method.from(property: methodProperty)
+        }
+
+        
         return calendar
     }
 }

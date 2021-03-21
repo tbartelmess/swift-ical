@@ -26,7 +26,6 @@
 #ifndef ICALPARAMETER_H
 #define ICALPARAMETER_H
 
-#include "libical_deprecated.h"
 #include "libical_ical_export.h"
 #include "icalderivedparameter.h"
 
@@ -82,7 +81,7 @@ LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new(icalparameter_kind kind);
  * icalparameter *param = icalparameter_new_from_string("ROLE=CHAIR");
  *
  * // clone the parameter
- * icalparameter *clone = icalparameter_clone(param);
+ * icalparameter *clone = icalparameter_new_clone(param);
  *
  * if(clone) {
  *     // use clone ...
@@ -92,18 +91,11 @@ LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new(icalparameter_kind kind);
  * icalparameter_free(param);
  * icalparameter_free(clone);
  * ```
- * @since 3.1.0
  */
-LIBICAL_ICAL_EXPORT icalparameter *icalparameter_clone(const icalparameter *p);
+LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new_clone(icalparameter *p);
 
 /**
- * @copydoc icalparameter_clone()
- * @deprecated use icalparameter_clone() instead
- */
-LIBICAL_ICAL_EXPORT LIBICAL_DEPRECATED(icalparameter *icalparameter_new_clone(icalparameter *p));
-
-/**
- * @brief Create ::icalparameter object from string
+ * @brief Creates new ::icalparameter object from string
  * @param value The string from which to create the ::icalparameter, in the form `"PARAMNAME=VALUE"`
  * @return An ::icalparameter that corresponds to the given string.
  *
@@ -131,7 +123,7 @@ LIBICAL_ICAL_EXPORT LIBICAL_DEPRECATED(icalparameter *icalparameter_new_clone(ic
 LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new_from_string(const char *value);
 
 /**
- * @brief Create ::icalparameter of a given @a kind with a given @a value
+ * @brief Creates new ::icalparameter of a given @a kind with a given @a value
  * @param kind The kind of ::icalparameter to create
  * @param value The value of the parameter
  * @return An ::icalparameter with the given kind and value.
@@ -165,10 +157,9 @@ LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new_from_value_string(icalparam
  * @param parameter The icalparameter to free
  *
  * This method needs to be used on all parameter objects returned
- * from any of the `_new()` methods including icalparameter_new(),
- * icalparameter_new_from_string() and icalparameter_new_from_value_string()
- * and on cloned parameter objects returned by icalparameter_clone()
- * when these object are not needed anymore and to be released.
+ * from any of the `_new()` methods including icalparameter_new(), icalparameter_new_clone(),
+ * icalparameter_new_from_string() and icalparameter_new_from_value_string(),
+ * when they are not needed anymore and to be released.
  *
  * ### Usage
  * ```c
@@ -185,7 +176,7 @@ LIBICAL_ICAL_EXPORT icalparameter *icalparameter_new_from_value_string(icalparam
 LIBICAL_ICAL_EXPORT void icalparameter_free(icalparameter *parameter);
 
 /**
- * @brief Convert ::icalparameter into an string representation
+ * @brief Converts ::icalparameter into a string representation
  * @param parameter The ::icalparameter to convert
  * @return A string representing the parameter according to RFC5445/RFC6868.
  * @sa icalparameter_as_ical_string_r()
@@ -217,9 +208,9 @@ LIBICAL_ICAL_EXPORT void icalparameter_free(icalparameter *parameter);
 LIBICAL_ICAL_EXPORT char *icalparameter_as_ical_string(icalparameter *parameter);
 
 /**
- * @brief Convert ::icalparameter into an string representation
+ * @brief Converts ::icalparameter into an string representation according to RFC5445/RFC6868.
  * @param parameter The ::icalparameter to convert
- * @return A string representing the parameter according to RFC5445/RFC6868.
+ * @return A string representing the parameter
  * @sa icalparameter_as_ical_string()
  *
  * @par Error handling
@@ -274,12 +265,12 @@ LIBICAL_ICAL_EXPORT char *icalparameter_as_ical_string_r(icalparameter *paramete
 LIBICAL_ICAL_EXPORT icalparameter_kind icalparameter_isa(icalparameter *parameter);
 
 /**
- * Determine if the given param is an icalparameter
+ * Determines if the given param is an icalparameter
  * @param param The libical-originated object to check
  * @return 1 if the object is an icalparameter, 0 otherwise.
  * @note This function expects to be given an object originating from
  *  libical - if this function is passed anything that is not from
- *  libical, it's behavior is undefined.
+ *  libical, its behavior is undefined.
  *
  * @b Error handling
  * When given a `NULL` object, it returns 0.
@@ -580,7 +571,7 @@ LIBICAL_ICAL_EXPORT int icalparameter_has_same_name(icalparameter *param1, icalp
 /**
  * @brief Returns a string representing the given ::icalparameter_kind
  * @param kind The icalparameter_kind
- * @return A string representing kind
+ * @return A string representing @a kind
  *
  * @par Error handling
  * When passed a non-existing ::icalparameter_kind, it returns `NULL`.
@@ -624,7 +615,7 @@ LIBICAL_ICAL_EXPORT icalparameter_kind icalparameter_string_to_kind(const char *
 /**
  * @brief Checks the validity of a ::icalparameter_kind
  * @param kind The icalparameter_kind
- * @return 1 if if the kind is valid, 0 otherwise
+ * @return 1 if @a kind is valid, 0 otherwise
  *
  * ### Usage
  * ```c

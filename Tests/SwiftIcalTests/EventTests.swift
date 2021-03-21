@@ -10,15 +10,24 @@ import SwiftIcal
 import XCTest
 
 
+func AssertICSEqual(_ ics1: String, _ ics2: String,
+                    file: StaticString = #file,
+                    line: UInt = #line) {
+    let lines1 = ics1.split(separator: "\r\n")
+    let lines2 = ics2.split(separator: "\r\n")
+
+    for (index, icsLine) in lines1.enumerated() {
+        XCTAssertTrue(lines2.contains(icsLine), "Expected to find line \(index) (\(icsLine)) from ICS 1 in ICS 2",
+                      file: file, line: line)
+    }
+}
+
 let testTimezone =  TimeZone(identifier: "Europe/Berlin")!
 extension Date {
-
     var components: DateComponents {
         let calendar = Calendar.init(identifier: .gregorian)
         return calendar.dateComponents(in: testTimezone, from: self)
     }
-
-
 }
 
 extension DateComponents {
@@ -36,7 +45,8 @@ extension DateComponents {
 
 class EventTests: XCTestCase {
     func testSimpleEvent() {
-        var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        var event = VEvent(summary: "Hello World",
+                           dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
         event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
         event.dtstamp = Date(timeIntervalSince1970: 0)
         event.created = Date(timeIntervalSince1970: 0)
@@ -50,8 +60,10 @@ class EventTests: XCTestCase {
         VERSION:2.0
         BEGIN:VEVENT
         DTSTAMP:19700101T000000Z
-        DTSTART;TZID=Europe/Berlin:20200509T110000
-        DTEND;TZID=Europe/Berlin:20200509T120000
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DTEND;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
@@ -59,7 +71,7 @@ class EventTests: XCTestCase {
         END:VEVENT
         END:VCALENDAR
         """
-        XCTAssertEqual(calendar.icalString(), expected.icalFormatted)
+        AssertICSEqual(calendar.icalString(), expected.icalFormatted)
     }
 
     func testEventWithAttendees() {
@@ -79,8 +91,10 @@ class EventTests: XCTestCase {
         VERSION:2.0
         BEGIN:VEVENT
         DTSTAMP:19700101T000000Z
-        DTSTART;TZID=Europe/Berlin:20200509T110000
-        DTEND;TZID=Europe/Berlin:20200509T120000
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DTEND;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T120000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE
@@ -127,8 +141,10 @@ class EventTests: XCTestCase {
         VERSION:2.0
         BEGIN:VEVENT
         DTSTAMP:19700101T000000Z
-        DTSTART;TZID=America/Toronto:20200509T220000
-        DTEND;TZID=America/Toronto:20200509T230000
+        DTSTART;TZID=/freeassociation.sourceforge.net/America/Toronto:
+         20200509T220000
+        DTEND;TZID=/freeassociation.sourceforge.net/America/Toronto:
+         20200509T230000
         SUMMARY:Hello World
         UID:TEST-UID
         TRANSP:OPAQUE

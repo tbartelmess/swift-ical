@@ -17,6 +17,39 @@ protocol LibicalParameterConvertible {
     func libicalParameter() -> LibicalParameter
 }
 
+extension LibicalComponent {
+    subscript(kind: icalproperty_kind) -> [LibicalProperty] {
+        var result: [LibicalProperty] = []
+        if let first = icalcomponent_get_first_property(self, kind) {
+            result.append(first)
+        }
+        while let property = icalcomponent_get_next_property(self, kind) {
+            result.append(property)
+        }
+        return result
+    }
+
+    subscript(kind: icalcomponent_kind)-> [LibicalComponent] {
+        var result: [LibicalComponent] = []
+        if let first = icalcomponent_get_first_component(self, kind) {
+            result.append(first)
+        }
+        while let property = icalcomponent_get_next_component(self, kind) {
+            result.append(property)
+        }
+        return result
+    }
+}
+
+extension LibicalProperty {
+    var value: String? {
+        guard let ptr = icalproperty_get_value_as_string(self) else {
+            return nil
+        }
+        return String(cString: ptr)
+    }
+}
+
 
 extension DateComponents {
     var icaltime: icaltimetype {
@@ -338,7 +371,7 @@ public struct VEvent {
     /// A short summary or subject for the calendar component.
     ///
     /// See [RFC 5543 Section 3.8.1.12](https://tools.ietf.org/html/rfc5545#section-3.8.1.12) for details.
-    public var summary: String
+    public var summary: String? = nil
 
     public var description: String?
 
@@ -383,7 +416,7 @@ extension VEvent: LibicalComponentConvertible {
         if let dtend = dtend {
             let dtendProperty = icalproperty_new_dtend(dtend.date!.icalTime(timeZone: dtend.timeZone ?? .utc))
             if let timezone = dtend.timeZone {
-                icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(timezone.identifier))
+                icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
             }
             icalcomponent_add_property(comp, dtendProperty)
         }

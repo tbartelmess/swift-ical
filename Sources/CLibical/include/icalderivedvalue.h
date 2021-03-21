@@ -127,7 +127,7 @@ typedef enum icalvalue_kind {
     ICAL_X_VALUE=5022,
     ICAL_XLICCLASS_VALUE=5025,
    ICAL_NO_VALUE=5031
-} icalvalue_kind;
+} icalvalue_kind ;
 
 #define ICALPROPERTY_FIRST_ENUM 10000
 

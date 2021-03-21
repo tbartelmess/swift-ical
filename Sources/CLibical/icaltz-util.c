@@ -18,7 +18,7 @@
 //krazy:excludeall=cpp
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icaltz-util.h"
@@ -82,9 +82,11 @@
 #define bswap_64 __builtin_bswap64
 #endif
 
-//@cond PRIVATE
 typedef struct
 {
+    char magic[4];
+    char version;
+    char unused[15];
     char ttisgmtcnt[4];
     char ttisstdcnt[4];
     char leapcnt[4];
@@ -93,11 +95,9 @@ typedef struct
     char charcnt[4];
 } tzinfo;
 
-/* fullpath to the system zoneinfo directory (where zone.tab lives) */
-static char s_zoneinfopath[MAXPATHLEN] = {0};
+static const char *zdir = NULL;
 
-/* A few well-known locations for system zoneinfo; can be overridden with TZDIR environment */
-static const char *s_zoneinfo_search_paths[] = {
+static const char *search_paths[] = {
     "/usr/share/zoneinfo",
     "/usr/lib/zoneinfo",
     "/etc/zoneinfo",
@@ -126,7 +126,6 @@ typedef struct
     time_t transition;
     long int change;
 } leap;
-//@endcond
 
 static int decode(const void *ptr)
 {
@@ -157,6 +156,23 @@ static int decode(const void *ptr)
     }
 }
 
+static long long int decode64(const void *ptr)
+{
+#if defined(sun) && defined(__SVR4)
+#if defined(_BIG_ENDIAN)
+    return *(const long long int *)ptr;
+#else
+    return BSWAP_64(*(const long long int *)ptr);
+#endif
+#else
+    if ((BYTE_ORDER == BIG_ENDIAN)) {
+        return *(const long long int *)ptr;
+    } else {
+        return (int)bswap_64(*(const unsigned long long int *)ptr);
+    }
+#endif
+}
+
 static char *zname_from_stridx(char *str, size_t idx)
 {
     size_t i;
@@ -177,54 +193,33 @@ static char *zname_from_stridx(char *str, size_t idx)
     return ret;
 }
 
-static void set_zoneinfopath(void)
+static void set_zonedir(void)
 {
     char file_path[MAXPATHLEN];
     const char *fname = ZONES_TAB_SYSTEM_FILENAME;
-    size_t i, num_zi_search_paths;
+    size_t i, num_search_paths;
 
-    /* Search for the zone.tab file in the dir specified by the TZDIR environment */
-    const char *env_tzdir = getenv("TZDIR");
-    if (env_tzdir != NULL) {
-        snprintf(file_path, MAXPATHLEN, "%s/%s", env_tzdir, fname);
-        if (!access (file_path, F_OK|R_OK)) {
-            strncpy(s_zoneinfopath, env_tzdir, MAXPATHLEN-1);
-            return;
-        }
-    }
-
-    /* Else, search for zone.tab in a list of well-known locations */
-    num_zi_search_paths = sizeof(s_zoneinfo_search_paths) / sizeof(s_zoneinfo_search_paths[0]);
-    for (i = 0; i < num_zi_search_paths; i++) {
-        snprintf(file_path, MAXPATHLEN, "%s/%s", s_zoneinfo_search_paths[i], fname);
+    num_search_paths = sizeof(search_paths) / sizeof(search_paths[0]);
+    for (i = 0; i < num_search_paths; i++) {
+        snprintf(file_path, MAXPATHLEN, "%s/%s", search_paths[i], fname);
         if (!access(file_path, F_OK | R_OK)) {
-            strncpy(s_zoneinfopath, s_zoneinfo_search_paths[i], MAXPATHLEN-1);
+            zdir = search_paths[i];
             break;
         }
     }
 }
 
-void icaltzutil_set_zone_directory(const char *zonepath)
-{
-    if ((zonepath == NULL) || (zonepath[0] == '\0')) {
-        memset(s_zoneinfopath, 0, MAXPATHLEN);
-    } else {
-        strncpy(s_zoneinfopath, zonepath, MAXPATHLEN-1);
-    }
-}
-
 const char *icaltzutil_get_zone_directory(void)
 {
-    if (s_zoneinfopath[0] == '\0') {
-        set_zoneinfopath();
-    }
+    if (!zdir)
+        set_zonedir();
 
-    return s_zoneinfopath;
+    return zdir;
 }
 
 static int calculate_pos(icaltimetype icaltime)
 {
-   static int r_pos[] = {1, 2, 3, -2, -1};
+   static const int r_pos[] = {1, 2, 3, -2, -1};
    int pos;
 
    pos = (icaltime.day - 1) / 7;
@@ -264,12 +259,13 @@ static void adjust_dtstart_day_to_rrule(icalcomponent *comp, struct icalrecurren
 
 icalcomponent *icaltzutil_fetch_timezone(const char *location)
 {
-    tzinfo type_cnts;
+    tzinfo header;
     size_t i, num_trans, num_chars, num_leaps, num_isstd, num_isgmt;
     size_t num_types = 0;
     size_t size;
     int pos, sign;
     time_t now = time(NULL);
+    int trans_size = 4;
 
     const char *zonedir;
     FILE *f = NULL;
@@ -321,33 +317,75 @@ icalcomponent *icaltzutil_fetch_timezone(const char *location)
         goto error;
     }
 
-    if (fseek(f, 20, SEEK_SET) != 0) {
-        icalerror_set_errno(ICAL_FILE_ERROR);
+    /* read version 1 header */
+    EFREAD(&header, 44, 1, f);
+    if (memcmp(header.magic, "TZif", 4)) {
+        icalerror_set_errno(ICAL_MALFORMEDDATA_ERROR);
+        goto error;
+    }
+    switch (header.version) {
+    case 0:
+        break;
+    case '2':
+    case '3':
+        if (sizeof(time_t) == 8) {
+            trans_size = 8;
+        }
+        break;
+    default:
+        icalerror_set_errno(ICAL_MALFORMEDDATA_ERROR);
         goto error;
     }
 
-    EFREAD(&type_cnts, 24, 1, f);
+    num_isgmt = (size_t)decode(header.ttisgmtcnt);
+    num_leaps = (size_t)decode(header.leapcnt);
+    num_chars = (size_t)decode(header.charcnt);
+    num_trans = (size_t)decode(header.timecnt);
+    num_isstd = (size_t)decode(header.ttisstdcnt);
+    num_types = (size_t)decode(header.typecnt);
 
-    num_isgmt = (size_t)decode(type_cnts.ttisgmtcnt);
-    num_leaps = (size_t)decode(type_cnts.leapcnt);
-    num_chars = (size_t)decode(type_cnts.charcnt);
-    num_trans = (size_t)decode(type_cnts.timecnt);
-    num_isstd = (size_t)decode(type_cnts.ttisstdcnt);
-    num_types = (size_t)decode(type_cnts.typecnt);
+    if (trans_size == 8) {
+        size_t skip = num_trans * 5 + num_types * 6 +
+            num_chars + num_leaps * 8 + num_isstd + num_isgmt;
 
+        /* skip version 1 data block */
+        if (fseek(f, (long)skip, SEEK_CUR) != 0) {
+            icalerror_set_errno(ICAL_FILE_ERROR);
+            goto error;
+        }
+
+        /* read version 2+ header */
+        EFREAD(&header, 44, 1, f);
+        if (memcmp(header.magic, "TZif", 4)) {
+            icalerror_set_errno(ICAL_MALFORMEDDATA_ERROR);
+            goto error;
+        }
+
+        num_isgmt = (size_t)decode(header.ttisgmtcnt);
+        num_leaps = (size_t)decode(header.leapcnt);
+        num_chars = (size_t)decode(header.charcnt);
+        num_trans = (size_t)decode(header.timecnt);
+        num_isstd = (size_t)decode(header.ttisstdcnt);
+        num_types = (size_t)decode(header.typecnt);
+    }
+
+    /* read data block */
     if (num_trans > 0) {
         transitions = calloc(num_trans, sizeof(time_t));
         if (transitions == NULL) {
             icalerror_set_errno(ICAL_NEWFAILED_ERROR);
             goto error;
         }
-        r_trans = calloc(num_trans, 4);
+        r_trans = calloc(num_trans, (size_t)trans_size);
         if (r_trans == NULL) {
             icalerror_set_errno(ICAL_NEWFAILED_ERROR);
             goto error;
         }
+    } else {
+        icalerror_set_errno(ICAL_FILE_ERROR);
+        goto error;
     }
-    EFREAD(r_trans, 4, num_trans, f);
+    EFREAD(r_trans, (size_t)trans_size, num_trans, f);
     temp = r_trans;
     if (num_trans) {
         trans_idx = calloc(num_trans, sizeof(int));
@@ -357,8 +395,12 @@ icalcomponent *icaltzutil_fetch_timezone(const char *location)
         }
         for (i = 0; i < num_trans; i++) {
             trans_idx[i] = fgetc(f);
-            transitions[i] = (time_t) decode(r_trans);
-            r_trans += 4;
+            if (trans_size == 8) {
+                transitions[i] = (time_t) decode64(r_trans);
+            } else {
+                transitions[i] = (time_t) decode(r_trans);
+            }
+            r_trans += trans_size;
         }
     }
     r_trans = temp;
@@ -397,10 +439,14 @@ icalcomponent *icaltzutil_fetch_timezone(const char *location)
         goto error;
     }
     for (i = 0; i < num_leaps; i++) {
-        char c[4];
+        char c[8];
 
-        EFREAD(c, 4, 1, f);
-        leaps[i].transition = (time_t)decode(c);
+        EFREAD(c, (size_t)trans_size, 1, f);
+        if (trans_size == 8) {
+            leaps[i].transition = (time_t)decode64(c);
+        } else {
+            leaps[i].transition = (time_t)decode(c);
+        }
 
         EFREAD(c, 4, 1, f);
         leaps[i].change = decode(c);
@@ -423,6 +469,10 @@ icalcomponent *icaltzutil_fetch_timezone(const char *location)
 
     while (i < num_types) {
         types[i++].isgmt = 0;
+    }
+
+    if (trans_size == 8) {
+        /* XXX  Do we need/want to read and use the footer? */
     }
 
     /* Read all the contents now */

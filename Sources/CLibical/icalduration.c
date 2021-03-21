@@ -20,7 +20,7 @@
 ======================================================================*/
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icalduration.h"
@@ -266,13 +266,13 @@ char *icaldurationtype_as_ical_string_r(struct icaldurationtype d)
     return buf;
 }
 
+/* From Russel Steinthal */
 int icaldurationtype_as_int(struct icaldurationtype dur)
 {
     return (int)((dur.seconds +
-                  60 * (dur.minutes +
-                        60 * (dur.hours +
-                              24 * (dur.days +
-                                    7 * dur.weeks))))
+                  (60 * dur.minutes) +
+                  (60 * 60 * dur.hours) +
+                  (60 * 60 * 24 * dur.days) + (60 * 60 * 24 * 7 * dur.weeks))
                  * (dur.is_neg == 1 ? -1 : 1));
 }
 
@@ -294,7 +294,7 @@ int icaldurationtype_is_null_duration(struct icaldurationtype d)
     }
 }
 
-/* in icalvalue_new_from_string_with_error, we should not call
+/* In icalvalue_new_from_string_with_error, we should not call
    icaldurationtype_is_null_duration() to see if there is an error
    condition. Null duration is perfectly valid for an alarm.
    We cannot depend on the caller to check icalerrno either,

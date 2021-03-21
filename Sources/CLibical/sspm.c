@@ -29,9 +29,9 @@
  The Initial Developer of the Original Code is Eric Busboom
 ======================================================================*/
 
-
-#include "config.h"
-#include <string.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "sspm.h"
 
@@ -522,6 +522,9 @@ static void sspm_build_header(struct sspm_header *header, char *line)
         if (header->minor == SSPM_UNKNOWN_MINOR_TYPE) {
             char *p = strchr(val, '/');
 
+            if (header->minor_text != 0) {
+                free(header->minor_text);
+            }
             if (p != 0) {
                 p++;    /* Skip the '/' */
 
@@ -532,6 +535,9 @@ static void sspm_build_header(struct sspm_header *header, char *line)
             }
         }
         if (boundary != 0) {
+            if (header->boundary != 0) {
+                free(header->boundary);
+            }
             header->boundary = sspm_strdup(boundary);
         }
 
@@ -563,6 +569,7 @@ static void sspm_build_header(struct sspm_header *header, char *line)
         if (header->content_id != 0) {
             free(header->content_id);
         }
+
         header->content_id = sspm_strdup(cid);
         header->def = 0;
     }
@@ -862,7 +869,7 @@ static void *sspm_make_multipart_subpart(struct mime_impl *impl, struct sspm_hea
 
         sspm_set_error(parent_header, SSPM_NO_BOUNDARY_ERROR, 0);
         /* read all of the reamining lines */
-        while ((line = sspm_get_next_line(impl)) != 0) {
+        while (sspm_get_next_line(impl) != 0) {
         }
 
         return 0;
@@ -1314,7 +1321,7 @@ static void sspm_encode_quoted_printable(struct sspm_buffer *buf, char *data)
     }
 }
 
-static char BaseTable[64] = {
+static const char BaseTable[64] = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',

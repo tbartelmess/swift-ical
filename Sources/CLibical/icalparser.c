@@ -30,7 +30,7 @@
  ======================================================================*/
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "icalparser.h"
@@ -46,7 +46,6 @@
 #define TMP_BUF_SIZE 80
 #define MAXIMUM_ALLOWED_PARAMETERS 100
 #define MAXIMUM_ALLOWED_MULTIPLE_VALUES 500
-#define MAXIMUM_ALLOWED_ERRORS 100 // Limit the number of errors created by insert_error
 
 struct icalparser_impl
 {
@@ -59,7 +58,6 @@ struct icalparser_impl
     int version;
     int level;
     int lineno;
-    int error_count;
     icalparser_state state;
     pvl_list components;
 
@@ -115,7 +113,6 @@ icalparser *icalparser_new(void)
     impl->buffer_full = 0;
     impl->continuation_line = 0;
     impl->lineno = 0;
-    impl->error_count = 0;
     memset(impl->temp, 0, TMP_BUF_SIZE);
 
     return (icalparser *) impl;
@@ -172,7 +169,7 @@ static char *parser_get_next_char(char c, char *str, int qm)
     return 0;
 }
 
-/** make a new tmp buffer out of a substring */
+/** Makes a new tmp buffer out of a substring. */
 static char *make_segment(char *start, char *end)
 {
     char *buf, *tmp;
@@ -216,34 +213,26 @@ static char *parser_get_prop_name(char *line, char **end)
     return str;
 }
 
-/* Decode parameter value per RFC6868 */
+/** Decode parameter value per RFC6868 */
 static void parser_decode_param_value(char *value)
 {
     char *in, *out;
 
     for (in = out = value; *in; in++, out++) {
-        int found_escaped_char = 0;
-
-        if (*in == '^') {
-            switch (*(in + 1)) {
+        if (*in == '^' && strspn(in+1, "n^'")) {
+            switch (*++in) {
             case 'n':
                 *out = '\n';
-                found_escaped_char = 1;
                 break;
+
             case '^':
                 *out = '^';
-                found_escaped_char = 1;
                 break;
 
             case '\'':
                 *out = '"';
-                found_escaped_char = 1;
                 break;
             }
-        }
-
-        if (found_escaped_char) {
-            ++in;
         } else {
             *out = *in;
         }
@@ -274,7 +263,7 @@ static int parser_get_param_name_stack(char *line, char *name, size_t name_lengt
         /* Dequote the value */
         next++;
 
-        end_quote = parser_get_next_char('"', next, 0);
+        end_quote = (*next == '"') ? next : parser_get_next_char('"', next, 0);
 
         if (end_quote == 0) {
             return 0;
@@ -321,7 +310,7 @@ static char *parser_get_param_name_heap(char *line, char **end)
     *end = next + 1;
     if (**end == '"') {
         *end = *end + 1;
-        next = parser_get_next_char('"', *end, 0);
+        next = (**end == '"') ? *end : parser_get_next_char('"', *end, 0);
         if (next == 0) {
             free(str);
             *end = NULL;
@@ -484,10 +473,6 @@ static char *parser_get_next_parameter(char *line, char **end)
     }
 }
 
-/**
- * Get a single property line, from the property name through the
- * final new line, and include any continuation lines
- */
 char *icalparser_get_line(icalparser *parser,
                           icalparser_line_gen_func line_gen_func)
 {
@@ -606,14 +591,10 @@ char *icalparser_get_line(icalparser *parser,
     return line;
 }
 
-static void insert_error(icalparser *parser, icalcomponent *comp, const char *text,
+static void insert_error(icalcomponent *comp, const char *text,
                          const char *message, icalparameter_xlicerrortype type)
 {
     char temp[1024];
-
-    if (parser->error_count > MAXIMUM_ALLOWED_ERRORS) {
-        return;
-    }
 
     if (text == 0) {
         snprintf(temp, 1024, "%s:", message);
@@ -624,8 +605,6 @@ static void insert_error(icalparser *parser, icalcomponent *comp, const char *te
     icalcomponent_add_property(
         comp,
         icalproperty_vanew_xlicerror(temp, icalparameter_new_xlicerrortype(type), 0));
-
-    parser->error_count++;
 }
 
 static int line_is_blank(char *line)
@@ -739,7 +718,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
 
         if (tail) {
             insert_error(
-                parser, tail, line,
+                tail, line,
                 "Got a data line, but could not find a property name or component begin tag",
                 ICAL_XLICERRORTYPE_COMPONENTPARSEERROR);
         }
@@ -770,7 +749,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
 
         if (c == 0) {
             c = icalcomponent_new(ICAL_XLICINVALID_COMPONENT);
-            insert_error(parser, c, str, "Parse error in component name",
+            insert_error(c, str, "Parse error in component name",
                          ICAL_XLICERRORTYPE_COMPONENTPARSEERROR);
         }
 
@@ -871,7 +850,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
     } else {
         icalcomponent *tail = pvl_data(pvl_tail(parser->components));
 
-        insert_error(parser, tail, str, "Parse error in property name",
+        insert_error(tail, str, "Parse error in property name",
                      ICAL_XLICERRORTYPE_PROPERTYPARSEERROR);
 
         tail = 0;
@@ -922,7 +901,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
 
                 if (name_heap == 0) {
                     /* 'tail' defined above */
-                    insert_error(parser, tail, str, "Cant parse parameter name",
+                    insert_error(tail, str, "Cant parse parameter name",
                                  ICAL_XLICERRORTYPE_PARAMETERNAMEPARSEERROR);
                     tail = 0;
                     break;
@@ -1033,7 +1012,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
                 /* Change for mozilla */
                 /* have the option of being flexible towards unsupported parameters */
 #if ICAL_ERRORS_ARE_FATAL == 1
-                insert_error(parser, tail, str, "Cant parse parameter name",
+                insert_error(tail, str, "Cant parse parameter name",
                              ICAL_XLICERRORTYPE_PARAMETERNAMEPARSEERROR);
                 tail = 0;
                 parser->state = ICALPARSER_ERROR;
@@ -1075,7 +1054,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
 
             if (param == 0) {
                 /* 'tail' defined above */
-                insert_error(parser, tail, str, "Cant parse parameter value",
+                insert_error(tail, str, "Cant parse parameter value",
                              ICAL_XLICERRORTYPE_PARAMETERVALUEPARSEERROR);
 
                 tail = 0;
@@ -1103,7 +1082,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
                     char *tmp_buf = icalmemory_tmp_buffer(tmp_buf_len);
                     snprintf(tmp_buf, tmp_buf_len, "%s %s", err_str, prop_str);
 
-                    insert_error(parser, tail, str, tmp_buf,
+                    insert_error(tail, str, tmp_buf,
                                  ICAL_XLICERRORTYPE_PARAMETERVALUEPARSEERROR);
 
                     value_kind = icalproperty_kind_to_value_kind(prop_kind);
@@ -1162,7 +1141,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
 
             if (vcount > 0) {
                 /* Actually, only clone after the second value */
-                icalproperty *clone = icalproperty_clone(prop);
+                icalproperty *clone = icalproperty_new_clone(prop);
                 icalcomponent *tail = pvl_data(pvl_tail(parser->components));
 
                 icalcomponent_add_property(tail, clone);
@@ -1184,7 +1163,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
                          icalvalue_kind_to_string(value_kind),
                          icalproperty_kind_to_string(prop_kind));
 
-                insert_error(parser, tail, str, temp, ICAL_XLICERRORTYPE_VALUEPARSEERROR);
+                insert_error(tail, str, temp, ICAL_XLICERRORTYPE_VALUEPARSEERROR);
 
                 /* Remove the troublesome property */
                 icalcomponent_remove_property(tail, prop);
@@ -1223,7 +1202,7 @@ icalcomponent *icalparser_add_line(icalparser *parser, char *line)
                 snprintf(temp, sizeof(temp), "No value for %s property. Removing entire property",
                          icalproperty_kind_to_string(prop_kind));
 
-                insert_error(parser, tail, str, temp, ICAL_XLICERRORTYPE_VALUEPARSEERROR);
+                insert_error(tail, str, temp, ICAL_XLICERRORTYPE_VALUEPARSEERROR);
 
                 /* Remove the troublesome property */
                 icalcomponent_remove_property(tail, prop);
@@ -1271,7 +1250,7 @@ icalcomponent *icalparser_clean(icalparser *parser)
 
     while ((tail = pvl_data(pvl_tail(parser->components))) != 0) {
 
-        insert_error(parser, tail, " ",
+        insert_error(tail, " ",
                      "Missing END tag for this component. Closing component at end of input.",
                      ICAL_XLICERRORTYPE_COMPONENTPARSEERROR);
 

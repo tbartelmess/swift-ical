@@ -18,7 +18,7 @@ class TimezoneTests: XCTestCase {
 
     func testTZID() {
         let string = TimeZone(identifier: "America/Santiago")?.icalString
-        XCTAssertTrue(string?.contains("TZID:America/Santiago") ?? false)
+        XCTAssertTrue(string?.contains("TZID:/freeassociation.sourceforge.net/America/Santiago") ?? false)
     }
 
     static var allTests = [

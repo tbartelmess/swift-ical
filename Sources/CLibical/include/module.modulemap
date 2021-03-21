@@ -1,8 +1,0 @@
-module CLibical {
-    header "ical.h"
-    header "icalcomponent.h"
-    header "icaltimezone.h"
-    header "icaltimezoneimpl.h"
-    header "icalproperty.h"
-    header "icalderivedproperty.h"
-}

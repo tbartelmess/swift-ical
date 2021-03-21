@@ -11,7 +11,7 @@ import CLibical
 @testable import SwiftIcal
 extension LibicalProperty {
     var icalString: String {
-        var stringPointer = icalproperty_as_ical_string(self)!
+        let stringPointer = icalproperty_as_ical_string(self)!
         var string = String(cString: stringPointer)
         defer { stringPointer.deallocate() }
 
