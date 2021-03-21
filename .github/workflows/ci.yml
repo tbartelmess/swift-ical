@@ -2,7 +2,7 @@ name: ci
 on:
   - push
 jobs:
-  test-linux-swift-5.2:
+  test-linux-swift-52:
     container:
       image: swift:5.2
     runs-on: ubuntu-latest
