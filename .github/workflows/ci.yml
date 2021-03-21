@@ -10,8 +10,12 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         swift: ["5.3.3"]
     steps:
+    - uses: actions/checkout@v1
     - uses: fwal/setup-swift@v1
       with:
         swift-version: ${{ matrix.swift }}
     - name: Get swift version
       run: swift --version
+    - name: Build
+      run: swift build
+
