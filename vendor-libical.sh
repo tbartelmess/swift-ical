@@ -40,8 +40,7 @@ perl -I libical/scripts libical/scripts/mkrestrictiontable.pl \
 
 mkdir -p Sources/CLibical/Public
 echo "#include <stdio.h>" > Sources/CLibical/Public/CLibical.h
-echo "#include <stddef.h>" >> Sources/CLibical/Public/CLibical.h
-echo "#include <time.h>" >> Sources/CLibical/Public/CLibical.h
+echo "#include <sys/types.h>" >> Sources/CLibical/Public/CLibical.h
 for header in \
   libical/src/libical/libical_ical_export.h \
   libical/src/libical/icaltime.h \

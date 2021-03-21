@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <stddef.h>
-#include <time.h>
+#include <sys/types.h>
 #ifndef LIBICAL_ICAL_EXPORT_H
 #define LIBICAL_ICAL_EXPORT_H
 
