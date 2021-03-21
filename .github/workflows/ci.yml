@@ -16,8 +16,6 @@ jobs:
         swift-version: ${{ matrix.swift }}
     - name: Get swift version
       run: swift --version
-    - name: Build
-      run: swift build
     - name: Start SSH session
       uses: luchihoratiu/debug-via-ssh@main
       with:
@@ -26,3 +24,5 @@ jobs:
         NGROK_REGION: eu
     - name: Wait
       run: sleep 6000
+    - name: Build
+      run: swift build
