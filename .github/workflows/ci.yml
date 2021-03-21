@@ -18,4 +18,11 @@ jobs:
       run: swift --version
     - name: Build
       run: swift build
-
+    - name: Start SSH session
+      uses: luchihoratiu/debug-via-ssh@main
+      with:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        SSH_PASS: ${{ secrets.SSH_PASS }}
+        NGROK_REGION: eu
+    - name: Wait
+      run: sleep 6000
