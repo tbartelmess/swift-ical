@@ -46,7 +46,7 @@ extension TimeZone {
     var icalComponent: LibicalComponent {
         loadZones()
 
-        let tz = icaltimezone_get_builtin_timezone_from_tzid(self.identifier)
+        let tz = icaltimezone_get_builtin_timezone_from_tzid("/freeassociation.sourceforge.net/" + self.identifier)
         let comp = icaltimezone_get_component(tz)
         
         return comp!
