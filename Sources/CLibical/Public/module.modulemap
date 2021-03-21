@@ -1,4 +1,0 @@
-module CLibical {
-    header "CLibical.h"
-    export *
-}
