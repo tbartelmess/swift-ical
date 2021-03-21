@@ -12,13 +12,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "CLibical", cSettings: [
+            name: "CLibical",
+            publicHeadersPath: "Public",
+            cSettings: [
             .define("HAVE_CONFIG_H"),
             .define("_GNU_SOURCE", .when(platforms: [Platform.linux])),
             .define("HAVE_ENDIAN_H", .when(platforms: [Platform.linux])),
             .define("HAVE_BYTESWAP_H", .when(platforms: [Platform.linux])),
             .define("PACKAGE_DATA_DIR=\"/tmp/zoneinfo\""),
-            .headerSearchPath("headers")
+            .headerSearchPath("include")
         ]),
         .target(
             name: "SwiftIcal",
