@@ -1,18 +1,14 @@
-name: ci
+name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
 on:
   - push
-jobs:
-  test-linux-swift-52:
-    container:
-      image: swift:5.2
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - run: swift test
-  test-linux-swift-53:
-    container:
-      image: swift:5.3
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - run: swift test
+runs-on: ${{ matrix.os }}
+strategy:
+  matrix:
+    os: [ubuntu-latest, macos-latest]
+    swift: ["5.3.3"]
+steps:
+- uses: fwal/setup-swift@v1
+  with:
+    swift-version: ${{ matrix.swift }}
+- name: Get swift version
+  run: swift --version
