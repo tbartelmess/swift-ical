@@ -52,7 +52,7 @@ public struct RecurranceRule {
     }
 
     public enum Month: Int {
-        case janurary = 1
+        case january = 1
         case february = 2
         case march = 3
         case april = 4
