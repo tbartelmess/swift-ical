@@ -416,7 +416,7 @@ extension VEvent: LibicalComponentConvertible {
         if let dtend = dtend {
             let dtendProperty = icalproperty_new_dtend(dtend.date!.icalTime(timeZone: dtend.timeZone ?? .utc))
             if let timezone = dtend.timeZone {
-                icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(timezone.identifier))
+                icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
             }
             icalcomponent_add_property(comp, dtendProperty)
         }
