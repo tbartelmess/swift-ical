@@ -11,10 +11,13 @@ public typealias WeekNumber = Int
 public typealias Month = Int
 public typealias Setpos = Int
 
-/// RecurranceRule
-public struct RecurranceRule {
+/// RecurrenceRule
+///
+/// Recurrence Rules describe  a rule or repeating pattern for recurring events, to-dos, journal entries, or time zone definitions.
+///
+public struct RecurrenceRule {
 
-    /// Options for the repeat fequency of a `RecurranceRule`.
+    /// Options for the repeat frequency of a `RecurrenceRule`.
     ///
     /// See [RFC 5545 Section 3.3.10](https://tools.ietf.org/html/rfc5545#section-3.3.10) for more details.
     public enum Frequency {
@@ -66,18 +69,31 @@ public struct RecurranceRule {
         case december = 12
     }
 
-    /// Creates a new `RecurranceRule`
+
+    /// Describes how long an event, todo, journal entry or timezone definition should be repeated for
+    public enum RecurrenceEnd {
+
+        /// No defined end, the event will repeat forever
+        case never
+
+        /// End after a defined number of occurrences
+        case count(Int)
+
+        /// End after a given date
+        case date(DateComponents)
+    }
+
+    /// Creates a new `RecurrenceRule`
     ///
-    /// - parameter frequency: Repeat frequency for the repeat rule. See `RecurranceRule.Frequency` for options.
-    public init(frequency: Frequency, count: Int? = nil, until: DateComponents? = nil) {
+    /// - parameter frequency: Repeat frequency for the repeat rule. See `RecurrenceRule.Frequency` for options.
+    /// - parameter until: Rule how often or until when the event, todo, journal entry or timezone definition should be repeated
+    public init(frequency: Frequency, until: RecurrenceEnd = .never) {
         self.frequency = frequency
-        self.count = count
         self.until = until
     }
 
     public var frequency: Frequency
-    public var until: DateComponents? = nil
-    public var count: Int? = nil
+    public var until: RecurrenceEnd
 
     /// Interval at which intervals the recurrence rule repeats
     ///
@@ -101,7 +117,7 @@ public struct RecurranceRule {
 
 }
 
-extension RecurranceRule.Frequency {
+extension RecurrenceRule.Frequency {
     var icalFrequency: icalrecurrencetype_frequency {
         switch self {
         case .secondly:
@@ -122,9 +138,7 @@ extension RecurranceRule.Frequency {
     }
 }
 
-
-
-extension RecurranceRule.Weekday {
+extension RecurrenceRule.Weekday {
     var icalRecurrenceWeekday:icalrecurrencetype_weekday {
         switch self {
         case .sunday:
@@ -145,8 +159,6 @@ extension RecurranceRule.Weekday {
     }
 }
 
-
-
 extension Sequence where Element == Int {
     var libicalRecurrenceSequence: [Int16] {
         var elements = sorted().map { Int16($0) }
@@ -162,20 +174,21 @@ extension Sequence where Element == Int {
     }
 }
 
-extension RecurranceRule: LibicalPropertyConvertible {
-
-
+extension RecurrenceRule: LibicalPropertyConvertible {
     func libicalProperty() -> LibicalProperty {
         var recurrence = icalrecurrencetype()
         recurrence.freq = frequency.icalFrequency
         recurrence.interval = Int16(interval)
-        if let count = count {
+
+        switch self.until {
+        case .count(let count):
             recurrence.count = Int32(count)
+        case .date(let components):
+            recurrence.until = components.icaltime
+        default:
+            break
         }
 
-        if let until = until {
-            recurrence.until = until.icaltime
-        }
         bySecond.copyToLibicalStruct(foo: &recurrence.by_second)
         byMinute.copyToLibicalStruct(foo: &recurrence.by_minute)
         byHour.copyToLibicalStruct(foo: &recurrence.by_hour)

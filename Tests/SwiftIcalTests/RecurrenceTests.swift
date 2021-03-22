@@ -20,7 +20,7 @@ extension LibicalProperty {
         return string
     }
 }
-extension RecurranceRule {
+extension RecurrenceRule {
     var icalString: String {
         libicalProperty().icalString
     }
@@ -29,58 +29,57 @@ extension RecurranceRule {
 
 class RecurranceTests: XCTestCase {
     func testSimpleSecondlyRule() {
-        let rule = RecurranceRule(frequency: .secondly)
+        let rule = RecurrenceRule(frequency: .secondly)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=SECONDLY")
     }
 
     func testSimpleMinutelyRule() {
-        let rule = RecurranceRule(frequency: .minutely)
+        let rule = RecurrenceRule(frequency: .minutely)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=MINUTELY")
     }
 
     func testSimpleHourlyRule() {
-        let rule = RecurranceRule(frequency: .hourly)
+        let rule = RecurrenceRule(frequency: .hourly)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=HOURLY")
     }
 
     func testSimpleDailyRule() {
-        let rule = RecurranceRule(frequency: .daily)
+        let rule = RecurrenceRule(frequency: .daily)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY")
     }
 
     func testSimpleWeeklyRule() {
-        let rule = RecurranceRule(frequency: .weekly)
+        let rule = RecurrenceRule(frequency: .weekly)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=WEEKLY")
     }
 
     func testSimpleMonthlyRule() {
-        let rule = RecurranceRule(frequency: .monthly)
+        let rule = RecurrenceRule(frequency: .monthly)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=MONTHLY")
     }
 
     func testSimpleYearlyRule() {
-        let rule = RecurranceRule(frequency: .yearly)
+        let rule = RecurrenceRule(frequency: .yearly)
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=YEARLY")
     }
 
     func testCount() {
         // Repeats daily for two times
-        let rule = RecurranceRule(frequency: .daily, count: 2)
+        let rule = RecurrenceRule(frequency: .daily, until: .count(2))
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY;COUNT=2")
     }
 
-    func testEndUTCDateTime() {
-        let rule = RecurranceRule(frequency: .daily, until: DateComponents(calendar: .current, timeZone: TimeZone.init(identifier: "UTC"), year: 2020, month: 5, day: 10))
+    func testEndUTCDateTime() throws {
+        let end = try XCTUnwrap(DateComponents(calendar: .current, timeZone: TimeZone.init(identifier: "UTC"), year: 2020, month: 5, day: 10))
+        let rule = RecurrenceRule(frequency: .daily, until: .date(end))
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY;UNTIL=20200510T000000Z")
     }
 
     func testByHour() {
-        var rule = RecurranceRule(frequency: .daily)
+        var rule = RecurrenceRule(frequency: .daily)
         rule.byHour = Set([0, 2, 4, 6])
         XCTAssertEqual(rule.icalString, "RRULE:FREQ=DAILY;BYHOUR=0,2,4,6")
     }
-
-
 
     static var allTests = [
         ("testSimpleSecondlyRule", testSimpleSecondlyRule),
