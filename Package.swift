@@ -9,6 +9,9 @@ let package = Package(
         .library(
             name: "SwiftIcal",
             targets: ["SwiftIcal"]),
+        .library(
+            name: "Libical",
+            targets: ["CLibical"])
     ],
     targets: [
         .target(
@@ -28,8 +31,7 @@ let package = Package(
         ),
         .testTarget(
             name: "SwiftIcalTests",
-            dependencies: ["SwiftIcal"]),
+            dependencies: ["SwiftIcal"])
     ],
     cLanguageStandard: .c11
-
 )
