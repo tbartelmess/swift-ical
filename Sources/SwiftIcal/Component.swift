@@ -268,6 +268,9 @@ public struct Attendee {
 
     /// Property if the attendee is requested to send
     public var rsvp: Bool
+    
+    /// Custom X parameters
+    public var xParameters: [String: String] = [:]
 }
 
 extension Attendee: LibicalPropertyConvertible {
@@ -306,6 +309,12 @@ extension Attendee: LibicalPropertyConvertible {
         if rsvp == true {
             icalproperty_add_parameter(property, icalparameter_new_rsvp(ICAL_RSVP_TRUE))
         }
+        
+        for xParameter in xParameters {
+            let param = icalparameter_new_from_string("\(xParameter.key)=\(xParameter.value)")
+            icalproperty_add_parameter(property, param)
+        }
+        
         return property!
     }
 }
@@ -318,25 +327,34 @@ public struct Organizer {
         self.commonName = commonName
         self.sentBy = sentBy
     }
-
-
+    
     /// E-Mail address of the Organizer
     public var address: CalendarUserAddress
 
     /// Name of the Organizer
     public var commonName: CommonName?
     public var sentBy: CalendarUserAddress?
+    
+    /// Custom X parameters
+    public var xParameters: [String: String] = [:]
 }
 
 extension Organizer: LibicalPropertyConvertible {
     func libicalProperty() -> LibicalProperty {
-        let property = icalproperty_new_organizer(self.address)
+        let property = icalproperty_new_organizer(self.address.mailtoAddress)
+
         if let commonName = commonName {
             icalproperty_add_parameter(property, icalparameter_new_cn(commonName))
         }
         if let sentBy = sentBy {
-            icalproperty_add_parameter(property, icalparameter_new_sentby(sentBy))
+            icalproperty_add_parameter(property, icalparameter_new_sentby(sentBy.mailtoAddress))
         }
+        
+        for xParameter in xParameters {
+            let param = icalparameter_new_from_string("\(xParameter.key)=\(xParameter.value)")
+            icalproperty_add_parameter(property, param)
+        }
+
         return property!
     }
 }
@@ -356,8 +374,6 @@ extension Transparency: LibicalPropertyConvertible {
             return icalproperty_new_transp(ICAL_TRANSP_TRANSPARENT)
         }
     }
-
-
 }
 
 public struct VEvent {
@@ -367,6 +383,8 @@ public struct VEvent {
         self.dtstart = dtstart
         self.dtend = dtend
     }
+    
+    public var useTZIDPrefix = true
 
     /// A short summary or subject for the calendar component.
     ///
@@ -397,6 +415,11 @@ public struct VEvent {
     public var organizer: Organizer? = nil
 
     public var transparency: Transparency = .opaque
+    
+    public var alarm: VAlarm? = nil
+    
+    /// Custom X properties
+    public var xProperties: [String: String] = [:]
 }
 
 extension VEvent: LibicalComponentConvertible {
@@ -409,14 +432,22 @@ extension VEvent: LibicalComponentConvertible {
         let dtstartProperty = icalproperty_new_dtstart(dtstart.date!.icalTime(timeZone: dtstart.timeZone ?? .utc))
 
         if let timezone = dtstart.timeZone {
-            icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
+            if useTZIDPrefix {
+                icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
+            } else {
+                icalproperty_add_parameter(dtstartProperty, icalparameter_new_tzid(timezone.identifier))
+            }
         }
         icalcomponent_add_property(comp, dtstartProperty)
 
         if let dtend = dtend {
             let dtendProperty = icalproperty_new_dtend(dtend.date!.icalTime(timeZone: dtend.timeZone ?? .utc))
             if let timezone = dtend.timeZone {
-                icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
+                if useTZIDPrefix {
+                    icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(String(cString: icaltimezone_tzid_prefix()!) + timezone.identifier))
+                } else {
+                    icalproperty_add_parameter(dtendProperty, icalparameter_new_tzid(timezone.identifier))
+                }
             }
             icalcomponent_add_property(comp, dtendProperty)
         }
@@ -437,7 +468,100 @@ extension VEvent: LibicalComponentConvertible {
         if let organizer = organizer {
             icalcomponent_add_property(comp, organizer.libicalProperty())
         }
+        
+        if let alarm = alarm {
+            icalcomponent_add_component(comp, alarm.libicalComponent())
+        }
+        
+        for xProperty in xProperties {
+            let param = icalproperty_new_x(xProperty.value)
+            icalproperty_set_x_name(param, xProperty.key)
+            icalcomponent_add_property(comp, param)
+        }
+        
         return comp!
     }
 }
 
+public struct Duration {
+    public let seconds: Int
+    public let minutes: Int
+    public let hours: Int
+    public let days: Int
+    public let weeks: Int
+    
+    public init(seconds: Int, minutes: Int, hours: Int, days: Int, weeks: Int) {
+        self.seconds = seconds
+        self.minutes = minutes
+        self.hours = hours
+        self.days = days
+        self.weeks = weeks
+    }
+}
+
+public enum AlarmTrigger {
+    case duration(duration: Duration)
+    case time(date: DateComponents)
+}
+
+public struct AlarmFrequent {
+    let frequent: Int
+    let duration: Duration
+}
+
+public enum AlarmAction {
+    case display(description: String)
+    case email(summary: String, description: String, attendees: [Attendee])
+}
+
+public struct VAlarm {
+    public var trigger: AlarmTrigger
+    public var action: AlarmAction
+    public var frequent: AlarmFrequent?
+    
+    public init(trigger: AlarmTrigger, action: AlarmAction) {
+        self.trigger = trigger
+        self.action = action
+    }
+}
+
+extension VAlarm: LibicalComponentConvertible {
+    func libicalComponent() -> LibicalComponent {
+        let alarm = icalcomponent_new_valarm()
+        
+        var triggertype = icaltriggertype()
+        switch trigger {
+        case .duration(duration: let duration):
+            let duration = icaldurationtype(is_neg: 1, days: UInt32(duration.days), weeks: UInt32(duration.weeks), hours: UInt32(duration.hours), minutes: UInt32(duration.minutes), seconds: UInt32(duration.seconds))
+            triggertype.duration = duration
+            triggertype.time = icaltime_null_time()
+        case .time(date: let date):
+            triggertype.duration = icaldurationtype_null_duration()
+            triggertype.time = date.date!.icalTime(timeZone: date.timeZone ?? .utc)
+        }
+        
+        let trigger = icalproperty_new_trigger(triggertype)
+        icalcomponent_add_property(alarm, trigger)
+        
+        switch action {
+        case .display(description: let description):
+            icalcomponent_add_property(alarm, icalproperty_new_action(ICAL_ACTION_DISPLAY));
+            icalcomponent_add_property(alarm, icalproperty_new_description(description));
+        case .email(summary: let summary, description: let description, attendees: let attendees):
+            icalcomponent_add_property(alarm, icalproperty_new_action(ICAL_ACTION_EMAIL));
+            icalcomponent_add_property(alarm, icalproperty_new_summary(summary));
+            icalcomponent_add_property(alarm, icalproperty_new_description(description));
+            attendees.forEach({ (attendee) in
+                icalcomponent_add_property(alarm, attendee.libicalProperty())
+            })
+        }
+        
+        if let frequent = frequent {
+            let duration = icaldurationtype(is_neg: 0, days: UInt32(frequent.duration.days), weeks: UInt32(frequent.duration.weeks), hours: UInt32(frequent.duration.hours), minutes: UInt32(frequent.duration.minutes), seconds: UInt32(frequent.duration.seconds))
+            icalcomponent_add_property(alarm, icalproperty_new_duration(duration))
+            icalcomponent_add_property(alarm, icalproperty_new_repeat(Int32(frequent.frequent)));
+        }
+        
+        return alarm!
+    }
+}
