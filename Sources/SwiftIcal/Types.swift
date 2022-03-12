@@ -43,24 +43,19 @@ extension TimeZone {
         return icaltimezone_get_builtin_timezone_from_tzid(self.identifier)
     }
 
-    var icalComponent: LibicalComponent {
+    public func icalComponent(useTZIDPrefix: Bool) -> LibicalComponent? {
         loadZones()
-
+        
         let tz = icaltimezone_get_builtin_timezone_from_tzid("/freeassociation.sourceforge.net/" + self.identifier)
         let comp = icaltimezone_get_component(tz)
         
-        return comp!
-    }
-
-    public var icalString: String {
-        guard let stringPointer = icalcomponent_as_ical_string(icalComponent) else {
-            fatalError("Failed to get component as string")
+        if !useTZIDPrefix {
+            let tzidProperty = icalcomponent_get_first_property(comp, ICAL_TZID_PROPERTY)
+            icalproperty_set_tzid(tzidProperty, self.identifier)
         }
-        let string = String(cString: stringPointer)
-        icalmemory_free_buffer(stringPointer)
-        return string
+        
+        return comp
     }
-
 }
 
 

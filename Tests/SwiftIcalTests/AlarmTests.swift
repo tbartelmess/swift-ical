@@ -13,7 +13,7 @@ import Foundation
 class AlarmTests: XCTestCase {
     func testAlertDisplayDuration() {
         let alarm = VAlarm(trigger: .duration(duration: Duration(seconds: 0, minutes: 30, hours: 0, days: 0, weeks: 0)), action: .display(description: "Remind me"))
-        let alarmComponent = icalString(component: alarm.libicalComponent())
+        let alarmComponent = alarm.libicalComponent().icalComponentString
         let expected = """
         BEGIN:VALARM
         TRIGGER:-PT30M
@@ -26,7 +26,7 @@ class AlarmTests: XCTestCase {
     
     func testAlertDisplayDate() {
         let alarm = VAlarm(trigger: .time(date: .testDate(year: 2023, month: 5, day: 9, hour: 11, minute: 0, second: 0)), action: .display(description: "Remind me"))
-        let alarmComponent = icalString(component: alarm.libicalComponent())
+        let alarmComponent = alarm.libicalComponent().icalComponentString
         let expected = """
         BEGIN:VALARM
         TRIGGER;VALUE=DATE-TIME:20230509T110000
@@ -39,7 +39,7 @@ class AlarmTests: XCTestCase {
     
     func testAlertEmailDuration() {
         let alarm = VAlarm(trigger: .duration(duration: Duration(seconds: 30, minutes: 30, hours: 2, days: 1, weeks: 1)), action: .email(summary: "summary", description: "description", attendees: [Attendee(address: "test@test.com"), Attendee(address: "test2@test.com")]))
-        let alarmComponent = icalString(component: alarm.libicalComponent())
+        let alarmComponent = alarm.libicalComponent().icalComponentString
         let expected = """
         BEGIN:VALARM
         TRIGGER:-P1W1DT2H30M30S
@@ -55,7 +55,7 @@ class AlarmTests: XCTestCase {
     
     func testAlertEmailDate() {
         let alarm = VAlarm(trigger: .time(date: .testDate(year: 2023, month: 5, day: 9, hour: 11, minute: 0, second: 0)), action: .email(summary: "summary", description: "description", attendees: [Attendee(address: "test@test.com"), Attendee(address: "test2@test.com")]))
-        let alarmComponent = icalString(component: alarm.libicalComponent())
+        let alarmComponent = alarm.libicalComponent().icalComponentString
         let expected = """
         BEGIN:VALARM
         TRIGGER;VALUE=DATE-TIME:20230509T110000
@@ -72,7 +72,7 @@ class AlarmTests: XCTestCase {
     func testAlertDisplayDurationRepeat() {
         var alarm = VAlarm(trigger: .duration(duration: Duration(seconds: 0, minutes: 30, hours: 0, days: 0, weeks: 0)), action: .display(description: "Remind me"))
         alarm.frequent = AlarmFrequent(frequent: 25, duration: Duration(seconds: 0, minutes: 30, hours: 0, days: 0, weeks: 0))
-        let alarmComponent = icalString(component: alarm.libicalComponent())
+        let alarmComponent = alarm.libicalComponent().icalComponentString
         let expected = """
         BEGIN:VALARM
         TRIGGER:-PT30M
@@ -126,15 +126,5 @@ class AlarmTests: XCTestCase {
         END:VCALENDAR
         """
         AssertICSEqual(calendar.icalString(), expected.icalFormatted)
-    }
-    
-    private func icalString(component: LibicalComponent) -> String {
-        guard let stringPointer = icalcomponent_as_ical_string(component) else {
-            fatalError("Failed to get component as string")
-        }
-        defer {icalmemory_free_buffer(stringPointer)}
-
-        let string = String(cString: stringPointer)
-        return string
     }
 }

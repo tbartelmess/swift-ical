@@ -9,6 +9,7 @@ import XCTest
 import Foundation
 import CLibical
 @testable import SwiftIcal
+
 extension LibicalProperty {
     var icalString: String {
         let stringPointer = icalproperty_as_ical_string(self)!
@@ -20,6 +21,7 @@ extension LibicalProperty {
         return string
     }
 }
+
 extension RecurranceRule {
     var icalString: String {
         libicalProperty().icalString

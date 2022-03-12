@@ -62,6 +62,8 @@ public struct VCalendar {
     /// If `autoincludeTimezones` is enabled, timezone definitions for all
     /// timezones used in `vevents` will be added to the `VCALENDAR` output.
     public var autoincludeTimezones = true
+    
+    public var useTZIDPrefix = true
 
     /// Creates a new `VCALENDAR`
     public init() {}
@@ -69,8 +71,7 @@ public struct VCalendar {
     /// Returns the `VCALENDAR` representation as a string
     public func icalString() -> String {
         let c = component()
-
-        //defer { icalmemory_free_buffer(c) }
+        
         guard let stringPointer = icalcomponent_as_ical_string(c) else {
             fatalError("Failed to get component as string")
         }
@@ -79,6 +80,7 @@ public struct VCalendar {
         let string = String(cString: stringPointer)
         return string
     }
+    
 
     /// Serializes the the component into a libical structure.
     /// It's the callers responsibliy to call `icalcomponent_free` to free
@@ -102,10 +104,9 @@ public struct VCalendar {
                 }
             }
         }
-
-
+        
         allTimezones.forEach { (timezone) in
-            icalcomponent_add_component(calendar, timezone.icalComponent)
+            icalcomponent_add_component(calendar, timezone.icalComponent(useTZIDPrefix: useTZIDPrefix))
         }
         events.forEach { event in
             icalcomponent_add_component(calendar, event.libicalComponent())
@@ -117,17 +118,16 @@ public struct VCalendar {
 
 public enum ParseError: Error, Equatable {
     case invalidVCalendar
-    case invalidVersion
-    case noVersion
+    case missingProperty(icalproperty_kind)
+    case invalidProperty(icalproperty_kind)
 }
-
-
 
 extension VCalendar {
     public static func parse(_ string: String) throws -> VCalendar {
         guard let calendarComponent: LibicalComponent = icalcomponent_new_from_string(string) else {
             throw ParseError.invalidVCalendar
         }
+        
         var calendar = VCalendar()
         // Parse Prodid
         if let prodid = calendarComponent[ICAL_PRODID_PROPERTY].first?.value {
@@ -136,10 +136,11 @@ extension VCalendar {
 
         // Parse Version
         guard let version = calendarComponent[ICAL_VERSION_PROPERTY].first?.value else {
-            throw ParseError.noVersion
+            throw ParseError.missingProperty(ICAL_VERSION_PROPERTY)
         }
+        
         if version != "2.0" {
-            throw ParseError.invalidVersion
+            throw ParseError.invalidProperty(ICAL_VERSION_PROPERTY)
         }
 
         // Parse Method
@@ -147,7 +148,6 @@ extension VCalendar {
         if let methodProperty = calendarComponent[ICAL_METHOD_PROPERTY].first {
             calendar.method = Method.from(property: methodProperty)
         }
-
         
         return calendar
     }

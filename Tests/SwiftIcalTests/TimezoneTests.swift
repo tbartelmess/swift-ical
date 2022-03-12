@@ -13,11 +13,11 @@ import Foundation
 class TimezoneTests: XCTestCase {
 
     func testSouthGeoriga() {
-        XCTAssertNotNil(TimeZone(identifier: "Atlantic/South_Georgia")?.icalString)
+        XCTAssertNotNil(TimeZone(identifier: "Atlantic/South_Georgia")?.icalComponent(useTZIDPrefix: true)?.icalComponentString)
     }
 
     func testTZID() {
-        let string = TimeZone(identifier: "America/Santiago")?.icalString
+        let string = TimeZone(identifier: "America/Santiago")?.icalComponent(useTZIDPrefix: true)?.icalComponentString
         XCTAssertTrue(string?.contains("TZID:/freeassociation.sourceforge.net/America/Santiago") ?? false)
     }
 
