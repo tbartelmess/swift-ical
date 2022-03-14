@@ -154,4 +154,167 @@ class EventTests: XCTestCase {
         """.icalFormatted
         XCTAssertEqual(calendar.icalString(), expected)
     }
+    
+    func testEventNotUseTZIDPrefix() {
+        var event = VEvent(summary: "Hello World",
+                           dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
+        event.uid = "TEST-UID"
+        event.useTZIDPrefix = false
+        var calendar = VCalendar()
+        calendar.events.append(event)
+        calendar.autoincludeTimezones = false
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:19700101T000000Z
+        DTSTART;TZID=Europe/Berlin:20200509T110000
+        DTEND;TZID=Europe/Berlin:20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:19700101T000000Z
+        END:VEVENT
+        END:VCALENDAR
+        """
+        AssertICSEqual(calendar.icalString(), expected.icalFormatted)
+    }
+    
+    func testEventXProperties() {
+        var event = VEvent(summary: "Hello World",
+                           dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
+        event.uid = "TEST-UID"
+        event.xProperties = ["X-NAME": "value", "X-NAME-2": "value2"]
+        var calendar = VCalendar()
+        calendar.events.append(event)
+        calendar.autoincludeTimezones = false
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:19700101T000000Z
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DTEND;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:19700101T000000Z
+        X-NAME-2:value2
+        X-NAME:value
+        END:VEVENT
+        END:VCALENDAR
+        """
+        AssertICSEqual(calendar.icalString(), expected.icalFormatted)
+    }
+    
+    func testEventWithOrganizer() {
+        var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
+        event.attendees = [Attendee(address: "thomas@bartelmess.io", commonName: "Thomas Bartelmess")]
+        event.organizer = Organizer(address: "organizer@test.com", commonName: "Organizer Name", sentBy: nil)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
+        event.uid = "TEST-UID"
+        var calendar = VCalendar()
+        calendar.events.append(event)
+        calendar.autoincludeTimezones = false
+
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:19700101T000000Z
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DTEND;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:19700101T000000Z
+        ATTENDEE;CN=Thomas Bartelmess:mailto:thomas@bartelmess.io
+        ORGANIZER;CN=Organizer Name:mailto:organizer@test.com
+        END:VEVENT
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
+    }
+    
+    func testEventWithAttendeesWithXParameters() {
+        var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        event.dtend = .testDate(year: 2020, month: 5, day: 9, hour: 12, minute: 0, second: 0)
+        var attendee = Attendee(address: "thomas@bartelmess.io", commonName: "Thomas Bartelmess")
+        attendee.xParameters = ["X-NAME": "1"]
+        event.attendees = [attendee]
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
+        event.uid = "TEST-UID"
+        var calendar = VCalendar()
+        calendar.events.append(event)
+        calendar.autoincludeTimezones = false
+
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:19700101T000000Z
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DTEND;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T120000
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:19700101T000000Z
+        ATTENDEE;CN=Thomas Bartelmess;X-NAME=1:mailto:thomas@bartelmess.io
+        END:VEVENT
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
+    }
+    
+    func testEventWithDuration() {
+        var event = VEvent(summary: "Hello World", dtstart: .testDate(year: 2020, month: 5, day: 9, hour: 11, minute: 0, second: 0))
+        event.duration = Duration(seconds: 0, minutes: 0, hours: 1, days: 0, weeks: 0)
+        event.attendees = [Attendee(address: "thomas@bartelmess.io", commonName: "Thomas Bartelmess")]
+        event.organizer = Organizer(address: "organizer@test.com", commonName: "Organizer Name", sentBy: nil)
+        event.dtstamp = Date(timeIntervalSince1970: 0)
+        event.created = Date(timeIntervalSince1970: 0)
+        event.uid = "TEST-UID"
+        var calendar = VCalendar()
+        calendar.events.append(event)
+        calendar.autoincludeTimezones = false
+
+        let expected = """
+        BEGIN:VCALENDAR
+        PRODID:-//SwiftIcal/EN
+        VERSION:2.0
+        BEGIN:VEVENT
+        DTSTAMP:19700101T000000Z
+        DTSTART;TZID=/freeassociation.sourceforge.net/Europe/Berlin:
+         20200509T110000
+        DURATION:PT1H
+        SUMMARY:Hello World
+        UID:TEST-UID
+        TRANSP:OPAQUE
+        CREATED:19700101T000000Z
+        ATTENDEE;CN=Thomas Bartelmess:mailto:thomas@bartelmess.io
+        ORGANIZER;CN=Organizer Name:mailto:organizer@test.com
+        END:VEVENT
+        END:VCALENDAR
+        """.icalFormatted
+        XCTAssertEqual(calendar.icalString(), expected)
+    }
 }
